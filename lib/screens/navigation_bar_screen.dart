@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:udemy_clone/screens/home_screen.dart';
+import 'package:udemy_clone/screens/all_courses_screen.dart';
+import 'package:udemy_clone/screens/favourite_screen.dart';
+import 'package:udemy_clone/screens/my_courses_screen.dart';
+import 'package:udemy_clone/screens/profile_screen.dart';
+import 'package:udemy_clone/screens/search_screen.dart';
 
 class NavBarScreen extends StatelessWidget {
   PersistentTabController _controller;
   bool _hideNavBar = false;
   List<Widget> _buildScreens() {
     return [
-      HomeScreen(),
-      HomeScreen(),
-      HomeScreen(),
-      HomeScreen(),
-      HomeScreen(),
-      // JobsPage()
-      /*NotificationsPage()*/
+      AllCoursesScreen(),
+      SearchScreen(),
+      MyCoursesScreen(),
+      FavouriteCoursesScreen(),
+      ProfileScreen(),
     ];
   }
 
@@ -21,31 +23,31 @@ class NavBarScreen extends StatelessWidget {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
-        title: "Content",
+        title: "Home",
         activeColor: Color(0xFFFC3B39),
         inactiveColor: Color(0xFF979797),
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.search),
-        title: ("Profile"),
+        title: ("Search"),
         activeColor: Color(0xFFFC3B39),
         inactiveColor: Color(0xFF979797),
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.play_circle_outline),
-        title: ("Setting"),
+        title: ("My Courses"),
         activeColor: Color(0xFFFC3B39),
         inactiveColor: Color(0xFF979797),
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.favorite_border),
-        title: ("Setting"),
+        title: ("Favourites"),
         activeColor: Color(0xFFFC3B39),
         inactiveColor: Color(0xFF979797),
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.account_circle),
-        title: ("Setting"),
+        title: ("Account"),
         activeColor: Color(0xFFFC3B39),
         inactiveColor: Color(0xFF979797),
       ),

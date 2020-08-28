@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class FavouriteCoursesScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _FavouriteCoursesScreenState createState() => _FavouriteCoursesScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _FavouriteCoursesScreenState extends State<FavouriteCoursesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +13,13 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Color(0xFFFF393A),
         elevation: 0,
         leading: null,
-        title: Text("All Courses"),
+        title: Text(
+          "Favourites",
+          style: TextStyle(
+            fontFamily: "SF Pro Display Regular",
+          ),
+        ),
+        //
         actions: [
           IconButton(icon: Icon(Icons.menu), onPressed: () {}),
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
@@ -77,6 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     child: Text(
                                                       "UX Design - From Wireframe to Prototype logo UX Design",
                                                       style: TextStyle(
+                                                          fontFamily:
+                                                              "SF Pro Display Regular",
                                                           fontSize: 14,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -93,6 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     child: Text(
                                                       "Jerry Gerige",
                                                       style: TextStyle(
+                                                          fontFamily:
+                                                              "SF Pro Display Regular",
                                                           fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.normal,
@@ -112,6 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             child: Text(
                                                           "\$25.00",
                                                           style: TextStyle(
+                                                              fontFamily:
+                                                                  "SF Pro Display Regular",
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight
@@ -137,6 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           child: Text(
                                                             "4.5",
                                                             style: TextStyle(
+                                                                fontFamily:
+                                                                    "SF Pro Display Regular",
                                                                 color: Colors
                                                                     .white),
                                                           ),
@@ -147,6 +161,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         Text(
                                                           "(125)",
                                                           style: TextStyle(
+                                                              fontFamily:
+                                                                  "SF Pro Display Regular",
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight

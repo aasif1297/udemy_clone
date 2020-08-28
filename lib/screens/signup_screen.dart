@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_input_border/gradient_input_border.dart';
 import 'package:udemy_clone/screens/intro_screen.dart';
-import 'package:udemy_clone/screens/signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,15 +39,47 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Sign up with your email address",
+                style: TextStyle(
+                    fontFamily: "SF Pro Display Regular",
+                    fontSize: 18,
+                    color: Color(0xFF999999)),
+              ),
+              SizedBox(
                 height: 40,
               ),
-              _textField(context, "Enter username", null,
-                  TextInputType.emailAddress, false),
+              _textField(context, "Full Name", null, TextInputType.emailAddress,
+                  false, 12),
               SizedBox(
                 height: 10,
               ),
               _textField(context, "Enter password", null,
-                  TextInputType.visiblePassword, true),
+                  TextInputType.visiblePassword, true, 12),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: _textField(context, "Enter username", null,
+                          TextInputType.emailAddress, false, 0),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                      child: _textField(context, "Enter password", null,
+                          TextInputType.visiblePassword, true, 0),
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 15,
               ),
@@ -68,15 +99,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Color(0xFFFFF4F4)),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => OnBoardingPage()),
-                          (Route<dynamic> route) => false);
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => OnBoardingPage(),
-                      //   ),
-                      // );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => OnBoardingPage(),
+                        ),
+                      );
                     }),
               ),
               SizedBox(
@@ -140,34 +167,25 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 80,
               ),
-              InkWell(
-                onTap: () => {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SignupScreen(),
-                    ),
-                  )
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Not registered yet?",
-                      style: TextStyle(
-                          fontFamily: "SF Pro Display Regular",
-                          fontSize: 16,
-                          color: Colors.black),
-                    ),
-                    Text(
-                      " Sign up now",
-                      style: TextStyle(
-                          fontFamily: "SF Pro Display Regular",
-                          fontSize: 16,
-                          color: Colors.red),
-                    ),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Not registered yet?",
+                    style: TextStyle(
+                        fontFamily: "SF Pro Display Regular",
+                        fontSize: 16,
+                        color: Colors.black),
+                  ),
+                  Text(
+                    " Sign up now",
+                    style: TextStyle(
+                        fontFamily: "SF Pro Display Regular",
+                        fontSize: 16,
+                        color: Colors.red),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 20,
@@ -186,10 +204,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _textField(BuildContext context, String text,
-      TextEditingController controller, TextInputType type, bool obscure) {
+  Widget _textField(
+      BuildContext context,
+      String text,
+      TextEditingController controller,
+      TextInputType type,
+      bool obscure,
+      double margin) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12),
+      margin: EdgeInsets.symmetric(horizontal: margin),
       child: TextField(
         obscureText: obscure,
         enabled: true,
