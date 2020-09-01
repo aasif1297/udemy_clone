@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:udemy_clone/screens/course_screen.dart';
 
-class CourseOverviewScreen extends StatefulWidget {
+class CourseScreen extends StatefulWidget {
   @override
-  _CourseOverviewScreenState createState() => _CourseOverviewScreenState();
+  _CourseScreenState createState() => _CourseScreenState();
 }
 
-class _CourseOverviewScreenState extends State<CourseOverviewScreen>
+class _CourseScreenState extends State<CourseScreen>
     with SingleTickerProviderStateMixin {
   final bodyGlobalKey = GlobalKey();
+  String dropdownValue = 'All Lectures';
   final List<Widget> myTabs = [
     Tab(
       child: Container(
         padding: EdgeInsets.only(bottom: 15.0, top: 10.0),
-        child: Text("About".toUpperCase(),
+        child: Text("Lectures".toUpperCase(),
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
       ),
     ),
     Tab(
       child: Container(
         padding: EdgeInsets.only(bottom: 15.0, top: 10.0),
-        child: Text("Curriculum".toUpperCase(),
+        child: Text("Q\&A".toUpperCase(),
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
       ),
     ),
     Tab(
       child: Container(
         padding: EdgeInsets.only(bottom: 15.0, top: 10.0),
-        child: Text("Related".toUpperCase(),
+        child: Text("More".toUpperCase(),
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
       ),
     ),
@@ -135,7 +135,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
         ),
       );
 
-  _buildTabContext2() => Container(
+  _buildTabContext() => Container(
           child: ListView(children: [
         Card(
           child: Padding(
@@ -143,12 +143,23 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Introduction to User Interface",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: "Google Sans Medium",
-                      color: Color(0xFF999999)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Introduction to User Interface",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "Google Sans Medium",
+                            color: Color(0xFF999999)),
+                      ),
+                    ),
+                    Icon(
+                      Icons.bookmark_border,
+                      color: Color(0xFFFF3939),
+                    )
+                  ],
                 ),
                 SizedBox(
                   height: 30,
@@ -175,7 +186,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                           style: TextStyle(
                               fontSize: 18,
                               fontFamily: "Google Sans Medium",
-                              color: Color(0xFF262626)),
+                              color: Color(0xFFFF3939)),
                         ),
                         SizedBox(
                           height: 10,
@@ -242,12 +253,23 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                 SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "Understanding of elements",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: "Google Sans Medium",
-                      color: Color(0xFF999999)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Understanding of elements",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "Google Sans Medium",
+                            color: Color(0xFF999999)),
+                      ),
+                    ),
+                    Icon(
+                      Icons.bookmark_border,
+                      color: Color(0xFFFF3939),
+                    )
+                  ],
                 ),
                 SizedBox(
                   height: 30,
@@ -338,56 +360,9 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
             ),
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
-        Container(
-          alignment: Alignment.bottomCenter,
-          color: Colors.transparent,
-          child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  height: 60,
-                  color: Colors.white,
-                  child: Row(children: [
-                    Expanded(
-                        flex: 1,
-                        child: Center(
-                          child: Text("GHC 25.00",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "Google Sans Medium",
-                              )),
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => CourseScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFF3939),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text("Enroll Now",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: "Google Sans Medium",
-                                  color: Colors.white,
-                                )),
-                          ),
-                        ))
-                  ]))),
-        ),
       ]));
 
-  _buildTabContext() => Container(
+  _buildTabContext2() => Container(
         child: ListView(
           children: [
             Card(
@@ -397,328 +372,41 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Description",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFF262626)),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Ruis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFF292929)),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "What you will learn",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFF262626)),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF292929)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF292929)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF292929)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Created by",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFF262626)),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      width: double.infinity,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 35,
-                            backgroundImage:
-                                AssetImage('assets/images/udemy_logo.png'),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
                           Expanded(
-                            child: Column(
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 0.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Jerry George",
-                                            style: TextStyle(
-                                                color: Color(0xFF262626),
-                                                fontSize: 18,
-                                                fontFamily:
-                                                    "Google Sans Medium"),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            "New jersey",
-                                            style: TextStyle(
-                                                color: Color(0xFF999999),
-                                                fontSize: 14,
-                                                fontFamily:
-                                                    "Google Sans Medium"),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 0.0),
-                                      child: Text(
-                                        "View profile",
-                                        textAlign: TextAlign.end,
-                                        style: TextStyle(
-                                            color: Color(0xFF5C36FF),
-                                            fontSize: 14,
-                                            fontFamily: "Google Sans Medium"),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 0.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "886",
-                                              style: TextStyle(
-                                                  color: Color(0xFF292929),
-                                                  fontSize: 14,
-                                                  fontFamily:
-                                                      "Google Sans Medium"),
-                                            ),
-                                            Text(
-                                              "Subscribed",
-                                              style: TextStyle(
-                                                  color: Color(0xFF999999),
-                                                  fontSize: 12,
-                                                  fontFamily:
-                                                      "Google Sans Medium"),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 0.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "39",
-                                              style: TextStyle(
-                                                  color: Color(0xFF292929),
-                                                  fontSize: 14,
-                                                  fontFamily:
-                                                      "Google Sans Medium"),
-                                            ),
-                                            Text(
-                                              "Courses",
-                                              style: TextStyle(
-                                                  color: Color(0xFF999999),
-                                                  fontSize: 12,
-                                                  fontFamily:
-                                                      "Google Sans Medium"),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 0.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(3)),
-                                                    color: Color(0xFF80D138),
-                                                  ),
-                                                  child: Text(
-                                                    "4.0",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14,
-                                                        fontFamily:
-                                                            "Google Sans Medium"),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                )),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Expanded(
-                                                    child: Text(
-                                                  "(272)",
-                                                  style: TextStyle(
-                                                      color: Color(0xFF292929),
-                                                      fontSize: 14,
-                                                      fontFamily:
-                                                          "Google Sans Medium"),
-                                                ))
-                                              ],
-                                            ),
-                                            Text(
-                                              "Avg. Ratings",
-                                              style: TextStyle(
-                                                  color: Color(0xFF999999),
-                                                  fontSize: 12,
-                                                  fontFamily:
-                                                      "Google Sans Medium"),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                              child: Text(
+                            "Total 114 Questions",
+                            style: TextStyle(
+                                fontSize: 15, color: Color(0xFF999999)),
+                          )),
                         ],
                       ),
                     ),
+                    Divider(
+                      height: 2,
+                      color: Color(0xFFD7D7D7),
+                    ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Text(
+                            "Lecture 5",
+                            style: TextStyle(
+                                fontSize: 15, color: Color(0xFF999999)),
+                          )),
+                          Text("By Ammy George",
+                              style: TextStyle(
+                                  fontSize: 15, color: Color(0xFF999999)))
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -735,42 +423,28 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                   child: Container(
                       height: 60,
                       color: Colors.white,
-                      child: Row(children: [
-                        Expanded(
-                            flex: 1,
-                            child: Center(
-                              child: Text("GHC 25.00",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "Google Sans Medium",
-                                  )),
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => CourseScreen(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFFF3939),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text("Enroll Now",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "Google Sans Medium",
-                                      color: Colors.white,
-                                    )),
-                              ),
-                            ))
-                      ]))),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CourseScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.only(top: 15),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFF3939),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text("Enroll Now",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Google Sans Medium",
+                                color: Colors.white,
+                              )),
+                        ),
+                      ))),
             ),
           ],
         ),
@@ -796,7 +470,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
           ),
           Container(
             margin: EdgeInsets.only(bottom: 20),
-            padding: const EdgeInsets.only(top: 190.0, left: 8, right: 8),
+            padding: const EdgeInsets.only(top: 250.0, left: 8, right: 8),
             child: NestedScrollView(
               controller: _scrollController,
               headerSliverBuilder: (context, value) {
@@ -805,7 +479,6 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                     child: Container(
                         padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
                           color: Colors.white,
                         ),
                         child: Column(
@@ -865,7 +538,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                     child: Container(
                       color: Colors.white,
                       child: TabBar(
-                        labelPadding: EdgeInsets.symmetric(horizontal: 35),
+                        labelPadding: EdgeInsets.symmetric(horizontal: 42),
                         controller: _tabController,
                         indicatorColor: Color(0xFFFF3939),
                         indicatorSize: TabBarIndicatorSize.tab,
