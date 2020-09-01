@@ -84,8 +84,8 @@ class MyCoursesScreenState extends State<MyCoursesScreen>
               controller: _tabController,
               children: <Widget>[
                 _favWidget(),
-                _mainWidget(false, "35% Completed"),
-                _mainWidget(true, "35% Completed")
+                _mainWidget(false, "35% Completed", 0.35),
+                _mainWidget(true, "100% Completed", 100)
               ],
             ),
           ),
@@ -94,7 +94,7 @@ class MyCoursesScreenState extends State<MyCoursesScreen>
     ));
   }
 
-  Widget _mainWidget(bool completed, String progress) {
+  Widget _mainWidget(bool completed, String progress, double _value) {
     return SingleChildScrollView(
       child: Container(
           width: MediaQuery.of(context).size.width,
@@ -126,7 +126,7 @@ class MyCoursesScreenState extends State<MyCoursesScreen>
                                       ),
                                     );
                                   },
-                                  child: _itemWidget(completed, progress));
+                                  child: _itemWidget(completed, progress, _value));
                             }))
                   ],
                 ),
@@ -296,7 +296,7 @@ class MyCoursesScreenState extends State<MyCoursesScreen>
     );
   }
 
-  Widget _itemWidget(bool completed, String progress) {
+  Widget _itemWidget(bool completed, String progress, double _value) {
     return Stack(
       children: [
         Container(
@@ -378,7 +378,7 @@ class MyCoursesScreenState extends State<MyCoursesScreen>
                                 (!completed)
                                     ? Color(0xFFF93B3B)
                                     : Color(0xFF27DF0B)),
-                            value: 0.8,
+                            value: _value,
                           ),
                         ),
                       ],
