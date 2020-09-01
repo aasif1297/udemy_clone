@@ -33,6 +33,7 @@ dependencies:
   introduction_screen: ^1.0.9
   persistent_bottom_nav_bar: ^2.0.5
   md2_tab_indicator: ^1.0.2
+  flutter_rating_bar: ^3.0.1+1
 
 dev_dependencies:
   flutter_test:

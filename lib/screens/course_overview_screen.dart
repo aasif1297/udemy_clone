@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:udemy_clone/screens/course_screen.dart';
+import 'package:udemy_clone/screens/instructor_profile_screen.dart';
 
 class CourseOverviewScreen extends StatefulWidget {
   @override
@@ -795,6 +796,45 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
             ),
           ),
           Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(top: 50),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    height: 40,
+                    alignment: Alignment.topLeft,
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    ),
+                  )),
+                  Container(
+                    height: 40,
+                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    alignment: Alignment.topRight,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.share,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Icon(
+                          Icons.bookmark_border,
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+          Container(
             margin: EdgeInsets.only(bottom: 20),
             padding: const EdgeInsets.only(top: 190.0, left: 8, right: 8),
             child: NestedScrollView(
@@ -824,12 +864,22 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                             Row(
                               children: [
                                 Expanded(
-                                    child: Text(
-                                  "Jerry George",
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: "Google Sans Medium",
-                                      color: Color(0xFF969696)),
+                                    child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            InstructorProfileScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Jerry George",
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: "Google Sans Medium",
+                                        color: Color(0xFF969696)),
+                                  ),
                                 )),
                                 Container(
                                     padding: EdgeInsets.symmetric(
@@ -865,14 +915,13 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                     child: Container(
                       color: Colors.white,
                       child: TabBar(
-                        labelPadding: EdgeInsets.symmetric(horizontal: 35),
                         controller: _tabController,
                         indicatorColor: Color(0xFFFF3939),
                         indicatorSize: TabBarIndicatorSize.tab,
                         indicatorWeight: 3.0,
                         unselectedLabelColor: Color(0xFF999999),
                         labelColor: Color(0xFFFF3939),
-                        isScrollable: true,
+                        isScrollable: false,
                         tabs: myTabs,
                       ),
                     ),
