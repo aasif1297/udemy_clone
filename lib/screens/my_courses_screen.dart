@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_clone/screens/course_overview_screen.dart';
+import 'package:udemy_clone/screens/courseoverview_2.dart';
 
 class MyCoursesScreen extends StatefulWidget {
   @override
@@ -51,7 +53,16 @@ class MyCoursesScreenState extends State<MyCoursesScreen> {
                             shrinkWrap: true,
                             itemCount: 3,
                             itemBuilder: (context, index) {
-                              return _itemWidget();
+                              return InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CourseOverviewScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: _itemWidget());
                             }))
                   ],
                 ),

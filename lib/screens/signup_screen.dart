@@ -167,25 +167,30 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(
                 height: 80,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Not registered yet?",
-                    style: TextStyle(
-                        fontFamily: "SF Pro Display Regular",
-                        fontSize: 16,
-                        color: Colors.black),
-                  ),
-                  Text(
-                    " Sign up now",
-                    style: TextStyle(
-                        fontFamily: "SF Pro Display Regular",
-                        fontSize: 16,
-                        color: Colors.red),
-                  ),
-                ],
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Already registered?",
+                      style: TextStyle(
+                          fontFamily: "SF Pro Display Regular",
+                          fontSize: 16,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      " Sign in now",
+                      style: TextStyle(
+                          fontFamily: "SF Pro Display Regular",
+                          fontSize: 16,
+                          color: Colors.red),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 20,

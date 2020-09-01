@@ -69,6 +69,9 @@ flutter:
     - family: SF Pro Display Regular
       fonts:
         - asset: assets/fonts/SFProDisplay-Regular.ttf
+    - family: Google Sans Medium
+      fonts:
+        - asset: assets/fonts/GoogleSans-Medium.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
     # - family: Emilio

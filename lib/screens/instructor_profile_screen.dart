@@ -49,20 +49,15 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
           child: Column(
             children: [
               TabBar(
-                labelStyle: TextStyle(
-                    //up to your taste
-                    fontWeight: FontWeight.w700),
-                indicatorSize: TabBarIndicatorSize.label, //makes it better
-                labelColor: Color(0xff1a73e8), //Google's sweet blue
-                unselectedLabelColor: Color(0xff5f6368), //niceish grey
-                isScrollable: true, //up to your taste
+                labelStyle: TextStyle(fontWeight: FontWeight.w700),
+                indicatorSize: TabBarIndicatorSize.label,
+                labelColor: Color(0xff1a73e8),
+                unselectedLabelColor: Color(0xff5f6368),
+                isScrollable: true,
                 indicator: MD2Indicator(
-                    //it begins here
                     indicatorHeight: 3,
                     indicatorColor: Color(0xff1a73e8),
-                    indicatorSize: MD2IndicatorSize
-                        .normal //3 different modes tiny-normal-full
-                    ),
+                    indicatorSize: MD2IndicatorSize.normal),
                 tabs: <Widget>[
                   Tab(
                     text: "Home",
