@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:udemy_clone/screens/account_screen.dart';
 import 'package:udemy_clone/screens/all_courses_screen.dart';
-import 'package:udemy_clone/screens/favourite_screen.dart';
 import 'package:udemy_clone/screens/homepage.dart';
 import 'package:udemy_clone/screens/my_courses_screen.dart';
-import 'package:udemy_clone/screens/profile_screen.dart';
+import 'package:udemy_clone/screens/notifications_screen.dart';
 
 class NavBarScreen extends StatelessWidget {
   PersistentTabController _controller;
@@ -14,8 +14,8 @@ class NavBarScreen extends StatelessWidget {
       HomeScreen(),
       AllCoursesScreen(),
       MyCoursesScreen(),
-      FavouriteCoursesScreen(),
-      ProfileScreen(),
+      NotificationsScreen(),
+      AccountScreen(),
     ];
   }
 
@@ -40,8 +40,8 @@ class NavBarScreen extends StatelessWidget {
         inactiveColor: Color(0xFF979797),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.favorite_border),
-        title: ("Favourites"),
+        icon: Icon(Icons.notifications_none),
+        title: ("Notifications"),
         activeColor: Color(0xFFFC3B39),
         inactiveColor: Color(0xFF979797),
       ),

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:udemy_clone/screens/all_courses_screen.dart';
+import 'package:udemy_clone/screens/categories_screen.dart';
+import 'package:udemy_clone/screens/course_overview_screen.dart';
+import 'package:udemy_clone/screens/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -52,9 +56,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       alignment: Alignment.topRight,
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.search,
-                            color: Colors.white,
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => SearchScreen(),
+                                ),
+                              );
+                            },
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
                           ),
                           SizedBox(
                             width: 12,
@@ -69,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 )),
             Container(
-              padding: EdgeInsets.only(top: 150, left: 20, right: 20),
+              padding: EdgeInsets.only(top: 150, left: 10, right: 10),
               child: Column(
                 children: [
                   Text(
@@ -135,12 +148,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.black),
                         ),
                       ),
-                      Text(
-                        "View All",
-                        style: TextStyle(
-                            fontFamily: "SF Pro Display Regular",
-                            fontSize: 12,
-                            color: Color(0xFFFF3939)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CategoriesScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "View All",
+                          style: TextStyle(
+                              fontFamily: "SF Pro Display Regular",
+                              fontSize: 12,
+                              color: Color(0xFFFF3939)),
+                        ),
                       ),
                     ],
                   ),
@@ -186,12 +208,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.black),
                         ),
                       ),
-                      Text(
-                        "View All",
-                        style: TextStyle(
-                            fontFamily: "SF Pro Display Regular",
-                            fontSize: 12,
-                            color: Color(0xFFFF3939)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => AllCoursesScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "View All",
+                          style: TextStyle(
+                              fontFamily: "SF Pro Display Regular",
+                              fontSize: 12,
+                              color: Color(0xFFFF3939)),
+                        ),
                       ),
                     ],
                   ),
@@ -205,81 +236,91 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: 10,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (ctx, index) {
-                        return Container(
-                            margin: EdgeInsets.only(right: 20),
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 130,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.5,
-                                  decoration: new BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      color: Color(0xFFA2A2A2),
-                                      borderRadius: new BorderRadius.all(
-                                        Radius.circular(5.0),
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "UX Design - From Wireframe to Prototype logo",
-                                  style: TextStyle(
-                                      fontFamily: "SF Pro Display Regular",
-                                      fontSize: 18,
-                                      color: Color(0xFF262626)),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "Instructor Name Here",
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => CourseOverviewScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                              margin: EdgeInsets.only(right: 20),
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 130,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.5,
+                                    decoration: new BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: Color(0xFFA2A2A2),
+                                        borderRadius: new BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "UX Design - From Wireframe to Prototype logo",
+                                    style: TextStyle(
+                                        fontFamily: "SF Pro Display Regular",
+                                        fontSize: 18,
+                                        color: Color(0xFF262626)),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Instructor Name Here",
+                                          style: TextStyle(
+                                              fontFamily:
+                                                  "SF Pro Display Regular",
+                                              fontSize: 11,
+                                              color: Color(0xFF262626)),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Container(
+                                        child: RatingBar(
+                                          initialRating: 3,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: true,
+                                          itemCount: 5,
+                                          itemSize: 14.0,
+                                          itemPadding: EdgeInsets.symmetric(
+                                              horizontal: 0),
+                                          itemBuilder: (context, _) => Icon(
+                                            Icons.star,
+                                            color: Color(0xFFF5A424),
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            print(rating);
+                                          },
+                                        ),
+                                      ),
+                                      Text(
+                                        "4.6 (2,300)",
                                         style: TextStyle(
                                             fontFamily:
                                                 "SF Pro Display Regular",
                                             fontSize: 11,
                                             color: Color(0xFF262626)),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Container(
-                                      child: RatingBar(
-                                        initialRating: 3,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        itemSize: 14.0,
-                                        itemPadding:
-                                            EdgeInsets.symmetric(horizontal: 0),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Color(0xFFF5A424),
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                        },
-                                      ),
-                                    ),
-                                    Text(
-                                      "4.6 (2,300)",
-                                      style: TextStyle(
-                                          fontFamily: "SF Pro Display Regular",
-                                          fontSize: 11,
-                                          color: Color(0xFF262626)),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ));
+                                    ],
+                                  ),
+                                ],
+                              )),
+                        );
                       },
                     ),
                   ),

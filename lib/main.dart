@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: AnimatedSplash(
-        imagePath: 'assets/images/splash_logo.png',
+        imagePath: 'assets/images/test_img.png',
         home: LoginScreen(),
         duration: 2500,
         type: AnimatedSplashType.StaticDuration,

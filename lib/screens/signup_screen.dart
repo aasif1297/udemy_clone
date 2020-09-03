@@ -33,9 +33,7 @@ class _SignupScreenState extends State<SignupScreen> {
               Padding(
                 padding: EdgeInsets.all(40),
                 child: Image.asset(
-                  "assets/images/udemy_logo.png",
-                  height: 150,
-                  width: 150,
+                  "assets/images/480X154.png",
                 ),
               ),
               SizedBox(
@@ -51,12 +49,12 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(
                 height: 40,
               ),
-              _textField(context, "Full Name", null, TextInputType.emailAddress,
-                  false, 12),
+              _textField1(context, "Full Name", null,
+                  TextInputType.emailAddress, false, 12),
               SizedBox(
                 height: 10,
               ),
-              _textField(context, "Enter password", null,
+              _textField1(context, "Email address", null,
                   TextInputType.visiblePassword, true, 12),
               SizedBox(
                 height: 10,
@@ -67,14 +65,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: _textField(context, "Enter username", null,
+                      child: _textField1(context, "Create Password", null,
                           TextInputType.emailAddress, false, 0),
                     ),
                     SizedBox(
                       width: 15,
                     ),
                     Expanded(
-                      child: _textField(context, "Enter password", null,
+                      child: _textField1(context, "Confirm Password", null,
                           TextInputType.visiblePassword, true, 0),
                     ),
                   ],
@@ -93,8 +91,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
                     child: Text(
-                      "Sign in",
+                      "Sign up",
                       style: TextStyle(
+                          fontSize: 18,
                           fontFamily: "SF Pro Display Regular",
                           color: Color(0xFFFFF4F4)),
                     ),
@@ -105,64 +104,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       );
                     }),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "or",
-                style: TextStyle(
-                    fontFamily: "SF Pro Display Regular",
-                    color: Color(0xFF9D9D9D)),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 1.15,
-                        child: RaisedButton(
-                            color: Color(0xFF3B5999),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 0),
-                            child: IconButton(
-                              onPressed: null,
-                              icon: Image.asset("assets/images/fb_logo.png"),
-                            ),
-                            onPressed: () {}),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 1.15,
-                        child: RaisedButton(
-                            color: Color(0xFFFFFFFF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 0),
-                            child: IconButton(
-                              onPressed: null,
-                              icon:
-                                  Image.asset("assets/images/google_logo.png"),
-                            ),
-                            onPressed: () {}),
-                      ),
-                    ),
-                  ],
-                ),
               ),
               SizedBox(
                 height: 80,
@@ -199,8 +140,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 "Terms \& Conditions",
                 style: TextStyle(
                     fontFamily: "SF Pro Display Regular",
-                    fontSize: 12,
-                    color: Colors.black),
+                    fontSize: 15,
+                    color: Color(0xFF262626)),
+              ),
+              SizedBox(
+                height: 10,
               ),
             ],
           ),
@@ -228,6 +172,10 @@ class _SignupScreenState extends State<SignupScreen> {
             : FocusScope.of(context).unfocus(),
         decoration: InputDecoration(
           hintText: text,
+          hintStyle: TextStyle(
+              fontSize: 15,
+              fontFamily: "SF Pro Display Regular",
+              color: Color(0xFF999999)),
           border: GradientOutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             focusedGradient: LinearGradient(
@@ -247,6 +195,50 @@ class _SignupScreenState extends State<SignupScreen> {
         controller: controller,
         keyboardType: type,
         maxLines: 1,
+      ),
+    );
+  }
+
+  Widget _textField1(
+      BuildContext context,
+      String text,
+      TextEditingController controller,
+      TextInputType type,
+      bool obscure,
+      double margin) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFFF3F5F5),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: margin),
+      child: Card(
+        elevation: 0,
+        child: TextField(
+          obscureText: obscure,
+          enabled: true,
+          textInputAction: TextInputAction.next,
+          onSubmitted: (_) => (!obscure)
+              ? FocusScope.of(context).nextFocus()
+              : FocusScope.of(context).unfocus(),
+          autofocus: false,
+          keyboardType: type,
+          decoration: new InputDecoration(
+              filled: true,
+              fillColor: Color(0xFFF3F5F5),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              contentPadding:
+                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              hintText: text,
+              hintStyle: TextStyle(
+                  color: Color(0xFF999999),
+                  fontFamily: "SF Pro Display Regular",
+                  fontSize: 14)),
+        ),
       ),
     );
   }

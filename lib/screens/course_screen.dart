@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_clone/screens/review_screen.dart';
 
 class CourseScreen extends StatefulWidget {
   @override
@@ -122,18 +123,27 @@ class _CourseScreenState extends State<CourseScreen>
                               color: Color(0xFF262626)),
                         ),
                       ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.thumb_up,
-                          size: 22,
-                          color: Color(0xFFFF3939),
-                        ),
-                        title: Text(
-                          "Review this course",
-                          style: TextStyle(
-                              fontFamily: "Google Sans Medium",
-                              fontSize: 16,
-                              color: Color(0xFF262626)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ReviewScreen(),
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.thumb_up,
+                            size: 22,
+                            color: Color(0xFFFF3939),
+                          ),
+                          title: Text(
+                            "Review this course",
+                            style: TextStyle(
+                                fontFamily: "Google Sans Medium",
+                                fontSize: 16,
+                                color: Color(0xFF262626)),
+                          ),
                         ),
                       ),
                       ListTile(
@@ -568,12 +578,12 @@ class _CourseScreenState extends State<CourseScreen>
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 0),
                           decoration: BoxDecoration(
                             color: Color(0xFFFF3939),
                           ),
                           alignment: Alignment.center,
-                          child: Text("Enroll Now",
+                          child: Text("Ask Question",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: "Google Sans Medium",

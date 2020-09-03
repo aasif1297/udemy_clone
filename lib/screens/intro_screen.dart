@@ -46,6 +46,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           title: "Text Here",
           body:
               "been try's standard dummy text ever since the 1500s, when an unknown printer took a gallery of typet to make a type specimen book. It has survived not only",
+          image: _buildImage('img3'),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "Text Here",
+          body:
+              "been try's standard dummy text ever since the 1500s, when an unknown printer took a gallery of typet to make a type specimen book. It has survived not only",
           image: _buildImage('img1'),
           decoration: pageDecoration,
         ),
@@ -69,10 +76,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         ),
       ),
       next: const Icon(Icons.arrow_forward),
-      done: const Text('Done',
+      done: const Text('Start Learning',
           style: TextStyle(
-              fontFamily: "SF Pro Display Regular",
-              fontWeight: FontWeight.w600)),
+            fontFamily: "SF Pro Display Regular",
+          )),
       dotsDecorator: const DotsDecorator(
         size: Size(10.0, 10.0),
         color: Color(0xFFBDBDBD),

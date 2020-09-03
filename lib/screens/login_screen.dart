@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gradient_input_border/gradient_input_border.dart';
 import 'package:udemy_clone/screens/intro_screen.dart';
 import 'package:udemy_clone/screens/signup_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -9,6 +10,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  Future<void> _launched;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _mainWidget() {
+    const String toLaunch = 'https://www.google.com/';
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Center(
@@ -34,20 +38,18 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: EdgeInsets.all(40),
                 child: Image.asset(
-                  "assets/images/udemy_logo.png",
-                  height: 150,
-                  width: 150,
+                  "assets/images/480X154.png",
                 ),
               ),
               SizedBox(
                 height: 40,
               ),
-              _textField(context, "Enter username", null,
+              _textField1(context, "Email address", null,
                   TextInputType.emailAddress, false),
               SizedBox(
                 height: 10,
               ),
-              _textField(context, "Enter password", null,
+              _textField1(context, "Password", null,
                   TextInputType.visiblePassword, true),
               SizedBox(
                 height: 15,
@@ -172,12 +174,20 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 20,
               ),
-              Text(
-                "Terms \& Conditions",
-                style: TextStyle(
-                    fontFamily: "SF Pro Display Regular",
-                    fontSize: 12,
-                    color: Colors.black),
+              InkWell(
+                onTap: () {
+                  _launched = _launchInWebViewOrVC(toLaunch);
+                },
+                child: Text(
+                  "Terms \& Conditions",
+                  style: TextStyle(
+                      fontFamily: "SF Pro Display Regular",
+                      fontSize: 15,
+                      color: Color(0xFF262626)),
+                ),
+              ),
+              SizedBox(
+                height: 10,
               ),
             ],
           ),
@@ -200,6 +210,10 @@ class _LoginScreenState extends State<LoginScreen> {
             : FocusScope.of(context).unfocus(),
         decoration: InputDecoration(
           hintText: text,
+          hintStyle: TextStyle(
+              fontSize: 15,
+              fontFamily: "SF Pro Display Regular",
+              color: Color(0xFF999999)),
           border: GradientOutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             focusedGradient: LinearGradient(
@@ -221,5 +235,57 @@ class _LoginScreenState extends State<LoginScreen> {
         maxLines: 1,
       ),
     );
+  }
+
+  Widget _textField1(BuildContext context, String text,
+      TextEditingController controller, TextInputType type, bool obscure) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFFF3F5F5),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: 12),
+      child: Card(
+        elevation: 0,
+        child: TextField(
+          obscureText: obscure,
+          enabled: true,
+          textInputAction: TextInputAction.next,
+          onSubmitted: (_) => (!obscure)
+              ? FocusScope.of(context).nextFocus()
+              : FocusScope.of(context).unfocus(),
+          autofocus: false,
+          keyboardType: type,
+          decoration: new InputDecoration(
+              filled: true,
+              fillColor: Color(0xFFF3F5F5),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              contentPadding:
+                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              hintText: text,
+              hintStyle: TextStyle(
+                  color: Color(0xFF999999),
+                  fontFamily: "SF Pro Display Regular",
+                  fontSize: 14)),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchInWebViewOrVC(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: true,
+        forceWebView: true,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
