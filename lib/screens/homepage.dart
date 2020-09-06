@@ -347,14 +347,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 10,
+                  SizedBox(
+                    height: 180,
+                    child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (ctx, index) {
-                        return _itemWidget();
-                      })
+                      itemCount: 1,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16.0,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index % 2 == 0) {
+                          return _buildCarousel(context, index ~/ 2);
+                        } else {
+                          return Divider();
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
                 ],
               ),
             ),
@@ -362,14 +374,28 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  Widget _itemWidget() {
+  Widget _buildCarousel(BuildContext context, int carouselIndex) {
+    return SizedBox(
+      height: 150,
+      child: PageView.builder(
+        itemCount: 5,
+        physics: BouncingScrollPhysics(),
+        controller: PageController(viewportFraction: 1),
+        itemBuilder: (BuildContext context, int itemIndex) {
+          return _itemWidget(context, carouselIndex, itemIndex);
+        },
+      ),
+    );
+  }
+
+  Widget _itemWidget(BuildContext context, int carouselIndex, int itemIndex) {
     return Stack(
       children: [
         Container(
-            margin: EdgeInsets.only(left: 30, top: 5, bottom: 5),
-            width: MediaQuery.of(context).size.width / 1.1,
+            margin: EdgeInsets.only(left: 15, top: 5, bottom: 5, right: 5),
+            width: MediaQuery.of(context).size.width,
             child: Card(
-              elevation: 15,
+              elevation: 3.5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
@@ -386,7 +412,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Container(
                           padding: EdgeInsets.only(
-                            left: 35,
+                            left: 12,
                             right: 15,
                             top: 15,
                           ),
@@ -396,14 +422,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontFamily: "SF Pro Display Regular",
-                                fontSize: 15,
+                                fontSize: 13,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF616161)),
                           ),
                         ),
                         Container(
                           padding: EdgeInsets.only(
-                            left: 35,
+                            left: 12,
                             right: 10,
                             top: 5,
                           ),
@@ -411,14 +437,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             "Jerry Gerige",
                             style: TextStyle(
                                 fontFamily: "SF Pro Display Regular",
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontWeight: FontWeight.normal,
                                 color: Color(0xFF969696)),
                           ),
                         ),
                         Container(
                           padding: EdgeInsets.only(
-                              left: 35, right: 15, top: 20, bottom: 10),
+                              left: 12, right: 15, top: 20, bottom: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -426,7 +452,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "35% Completed",
                                 style: TextStyle(
                                     fontFamily: "SF Pro Display Regular",
-                                    fontSize: 11,
+                                    fontSize: 9,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFFF93B3B)),
                               ),
@@ -435,7 +461,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Container(
                           padding: EdgeInsets.only(
-                              left: 35, right: 15, top: 0, bottom: 15),
+                              left: 12, right: 15, top: 0, bottom: 15),
                           child: LinearProgressIndicator(
                             backgroundColor: Color(0xFFE8E8E8),
                             valueColor: AlwaysStoppedAnimation<Color>(
@@ -450,9 +476,9 @@ class _HomeScreenState extends State<HomeScreen> {
               )),
             )),
         Container(
-          margin: EdgeInsets.only(left: 10, right: 10, top: 23.8),
-          height: 100,
-          width: 150,
+          margin: EdgeInsets.only(left: 0, right: 10, top: 23.8),
+          height: 80,
+          width: 130,
           decoration: new BoxDecoration(
               shape: BoxShape.rectangle,
               color: Color(0xFFA2A2A2),

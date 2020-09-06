@@ -77,6 +77,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
         child: Column(
           children: [
             Container(
+                margin: EdgeInsets.only(bottom: 50),
                 child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -86,58 +87,14 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                     })),
             SizedBox(
               height: 20,
-            ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              color: Colors.transparent,
-              child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                      height: 60,
-                      color: Colors.white,
-                      child: Row(children: [
-                        Expanded(
-                            flex: 1,
-                            child: Center(
-                              child: Text("GHC 25.00",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "Google Sans Medium",
-                                  )),
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => CourseScreen(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFFF3939),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text("Enroll Now",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "Google Sans Medium",
-                                      color: Colors.white,
-                                    )),
-                              ),
-                            ))
-                      ]))),
-            ),
+            )
           ],
         ),
       );
 
   _buildTabContext2() => Container(
-          child: ListView(children: [
+      margin: EdgeInsets.only(bottom: 50),
+      child: ListView(children: [
         Card(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -339,56 +296,10 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
             ),
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
-        Container(
-          alignment: Alignment.bottomCenter,
-          color: Colors.transparent,
-          child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  height: 60,
-                  color: Colors.white,
-                  child: Row(children: [
-                    Expanded(
-                        flex: 1,
-                        child: Center(
-                          child: Text("GHC 25.00",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "Google Sans Medium",
-                              )),
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => CourseScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFF3939),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text("Enroll Now",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: "Google Sans Medium",
-                                  color: Colors.white,
-                                )),
-                          ),
-                        ))
-                  ]))),
-        ),
       ]));
 
   _buildTabContext() => Container(
+        margin: EdgeInsets.only(bottom: 50),
         child: ListView(
           children: [
             Card(
@@ -725,54 +636,6 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              color: Colors.transparent,
-              child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                      height: 60,
-                      color: Colors.white,
-                      child: Row(children: [
-                        Expanded(
-                            flex: 1,
-                            child: Center(
-                              child: Text("GHC 25.00",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "Google Sans Medium",
-                                  )),
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => CourseScreen(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFFF3939),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text("Enroll Now",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "Google Sans Medium",
-                                      color: Colors.white,
-                                    )),
-                              ),
-                            ))
-                      ]))),
-            ),
           ],
         ),
       );
@@ -933,9 +796,54 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                 children: [
                   _buildTabContext(),
                   _buildTabContext2(),
-                  _buildTabContext3()
+                  _buildTabContext3(),
                 ],
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              height: 60,
+              child: Container(
+                  color: Colors.white,
+                  child: Row(children: [
+                    Expanded(
+                        flex: 1,
+                        child: Center(
+                          child: Text("GHC 25.00",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Google Sans Medium",
+                              )),
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => CourseScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFF3939),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text("Enroll Now",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "Google Sans Medium",
+                                  color: Colors.white,
+                                )),
+                          ),
+                        ))
+                  ])),
             ),
           ),
         ],
