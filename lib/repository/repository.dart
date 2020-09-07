@@ -2,15 +2,10 @@ import 'package:dio/dio.dart';
 
 class MovieRepository {
   final String apiKey = "1acad6e7ed26674ee808facebb36cd00";
-  static String mainUrl = "https://api.themoviedb.org/3";
+  static String mainUrl = "https://demo.academy-lms.com/default/index.php/api/";
 
   final Dio _dio = Dio();
   var getPopularUrl = '$mainUrl/movie/top_rated';
-  var getMoviesUrl = '$mainUrl/discover/movie';
-  var getPlayingUrl = '$mainUrl/movie/now_playing';
-  var getGenresUrl = "$mainUrl/genre/movie/list";
-  var getPersonsUrl = "$mainUrl/trending/person/week";
-  var movieUrl = "$mainUrl/movie";
 
   // Future<MovieResponse> getMovies() async {
   //   var params = {'api_key': apiKey, 'language': 'en-US', 'page': 1};
