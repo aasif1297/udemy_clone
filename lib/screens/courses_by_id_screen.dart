@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:udemy_clone/bloc/get_courses_bloc.dart';
-import 'package:udemy_clone/model/categories_response.dart';
 import 'package:udemy_clone/model/courses_response.dart';
 import 'package:udemy_clone/screens/notifications_screen.dart';
 import 'package:udemy_clone/screens/search_screen.dart';
 
-class AllCoursesScreen extends StatefulWidget {
+class CoursesByIdScreen extends StatefulWidget {
+  final String id;
+
+  const CoursesByIdScreen({Key key, this.id}) : super(key: key);
+
   @override
-  _AllCoursesScreenState createState() => _AllCoursesScreenState();
+  _CoursesByIdScreenState createState() => _CoursesByIdScreenState();
 }
 
-class _AllCoursesScreenState extends State<AllCoursesScreen>
+class _CoursesByIdScreenState extends State<CoursesByIdScreen>
     with TickerProviderStateMixin {
   bool displayMyWidget = true;
   bool visible = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    coursesBloc..getAllCourses();
+    coursesBloc..getCoursesById(widget.id);
   }
 
   @override
@@ -66,7 +68,7 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
         ],
       ),
       body: StreamBuilder<List<CoursesResponse>>(
-          stream: coursesBloc.subject.stream,
+          stream: coursesBloc.subjectById.stream,
           builder: (ctx, AsyncSnapshot<List<CoursesResponse>> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data[0].error != null &&

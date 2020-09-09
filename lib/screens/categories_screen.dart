@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:udemy_clone/model/top_categories.dart';
+import 'package:udemy_clone/bloc/get_categories_bloc.dart';
+import 'package:udemy_clone/model/categories_response.dart';
+import 'package:udemy_clone/screens/courses_by_id_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   @override
@@ -7,25 +9,19 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  List<TopCategories> _topCategoryList = [
-    new TopCategories("Design", "125 Courses"),
-    new TopCategories("Business", "199 Courses"),
-    new TopCategories("Development", "112 Courses"),
-    new TopCategories("Photography", "221 Courses"),
-    new TopCategories("Fitness", "221 Courses"),
-    new TopCategories("Music", "221 Courses"),
-    new TopCategories("Music", "221 Courses"),
-    new TopCategories("Design", "221 Courses"),
-    new TopCategories("Business", "221 Courses"),
-    new TopCategories("Development", "221 Courses"),
-    new TopCategories("Photography", "221 Courses"),
-    new TopCategories("Fitness", "221 Courses"),
-    new TopCategories("Music", "221 Courses"),
-  ];
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    categoriesBloc..getCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Color(0xFFFF393A),
         elevation: 0,
@@ -49,86 +45,137 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
         ],
       ),
-      body: _mainWidget(),
+      body: StreamBuilder<List<CategoriesResponse>>(
+          stream: categoriesBloc.subject.stream,
+          builder: (ctx, AsyncSnapshot<List<CategoriesResponse>> snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data[0].error != null &&
+                  snapshot.data[0].error.length > 0) {
+                return _errorWidget(snapshot.data[0].error);
+              }
+              return _mainWidget(snapshot.data);
+            } else {
+              return _errorWidget(snapshot.error);
+            }
+          }),
     );
   }
 
-  Widget _mainWidget() {
-    return SingleChildScrollView(
-      child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              Container(
-                child: Stack(
-                  children: [
-                    Positioned(
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(color: Colors.red),
-                      ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(top: 30),
-                        child: GridView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: _topCategoryList.length,
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 0,
-                              mainAxisSpacing: 0,
-                              childAspectRatio: 1.7,
-                            ),
-                            itemBuilder: (_, index) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xFFA2A2A2),
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.only(left: 15, bottom: 20),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${_topCategoryList[index].courseCategoryTitle}",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              fontFamily:
-                                                  "SF Pro Display Regular",
-                                              color: Colors.white,
-                                              fontSize: 18),
-                                        ),
-                                        Text(
-                                          "${_topCategoryList[index].totalCourses}",
-                                          style: TextStyle(
-                                              fontFamily:
-                                                  "SF Pro Display Regular",
-                                              color: Colors.white,
-                                              fontSize: 10),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              );
-                            }))
-                  ],
-                ),
-              ),
-            ],
-          )),
+  Widget _errorWidget(String error) {
+    return Center(
+      child: Text(
+        "$error",
+        style: TextStyle(color: Colors.black),
+      ),
     );
+  }
+
+  Widget _mainWidget(List<CategoriesResponse> data) {
+    List<CategoriesResponse> response = data;
+    if (response.length == 0) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text(
+                  "No Courses Available",
+                  style: TextStyle(color: Colors.black45),
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    } else
+      return SingleChildScrollView(
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                Container(
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        child: Container(
+                          height: 100,
+                          decoration: BoxDecoration(color: Colors.red),
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(top: 30),
+                          child: GridView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: response.length,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 0,
+                                mainAxisSpacing: 0,
+                                childAspectRatio: 1.7,
+                              ),
+                              itemBuilder: (_, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CoursesByIdScreen(
+                                                    id: response[index].id)));
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFFA2A2A2),
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: 15, bottom: 20),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${response[index].name}",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                  fontFamily:
+                                                      "SF Pro Display Regular",
+                                                  color: Colors.white,
+                                                  fontSize: 18),
+                                            ),
+                                            Text(
+                                              "${response[index].numberOfCourses}",
+                                              style: TextStyle(
+                                                  fontFamily:
+                                                      "SF Pro Display Regular",
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }))
+                    ],
+                  ),
+                ),
+              ],
+            )),
+      );
   }
 }

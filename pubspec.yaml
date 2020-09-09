@@ -38,6 +38,7 @@ dependencies:
   dio: ^3.0.10
   bloc: ^6.0.2
   rxdart: ^0.24.1
+  shared_preferences: any
 
 dev_dependencies:
   flutter_test:

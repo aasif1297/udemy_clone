@@ -1,33 +1,25 @@
 class LoginResponse {
-  String userId;
-  String firstName;
-  String lastName;
-  String email;
-  String role;
-  int validity;
-  String token;
-  String error;
+  final String userId;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String role;
+  final int validity;
+  final String token;
+  final String error;
 
-  LoginResponse(
-      {this.userId,
-      this.firstName,
-      this.lastName,
-      this.email,
-      this.role,
-      this.validity,
-      this.token,
-      this.error});
+  LoginResponse(this.userId, this.firstName, this.lastName, this.email,
+      this.role, this.validity, this.token, this.error);
 
-  LoginResponse.fromJson(Map<String, dynamic> json) {
-    userId = json['user_id'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    email = json['email'];
-    role = json['role'];
-    validity = json['validity'];
-    token = json['token'];
-    error = "";
-  }
+  LoginResponse.fromJson(Map<String, dynamic> json)
+      : userId = json['user_id'],
+        firstName = json['first_name'],
+        lastName = json['last_name'],
+        email = json['email'],
+        role = json['role'],
+        validity = json['validity'],
+        token = json['token'],
+        error = "";
 
   LoginResponse.withError(String errorValue)
       : userId = "",

@@ -1,11 +1,66 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
 
-class MovieRepository {
-  final String apiKey = "1acad6e7ed26674ee808facebb36cd00";
-  static String mainUrl = "https://demo.academy-lms.com/default/index.php/api/";
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:udemy_clone/model/categories_response.dart';
+import 'package:udemy_clone/model/courses_response.dart';
+import 'package:udemy_clone/model/login_response.dart';
+
+class MainRepository {
+  static String mainUrl = "https://demo.academy-lms.com/default/index.php/api";
 
   final Dio _dio = Dio();
-  var getPopularUrl = '$mainUrl/movie/top_rated';
+  var categories_url = '$mainUrl/categories';
+  var login_url = '$mainUrl/login';
+  var category_wise_course_url = '$mainUrl/category_wise_course';
+  var top_courses_url = "$mainUrl/top_courses";
+
+  Future<LoginResponse> login(String email, String password) async {
+    var params = {'email': email, 'password': password};
+    try {
+      Response response = await _dio.get(login_url, queryParameters: params);
+      return LoginResponse.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      LoginResponse.withError("$error");
+    }
+  }
+
+  Future<List<CategoriesResponse>> getCategories() async {
+    try {
+      // Response response = await _dio.get(categoriesURL);
+      Response<String> response = await _dio.get(categories_url);
+      List responseJson = json.decode(response.data);
+      return responseJson.map((e) => CategoriesResponse.fromJson(e)).toList();
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  Future<List<CoursesResponse>> getCoursesById(String id) async {
+    var params = {'category_id': id};
+
+    try {
+      Response<String> response = await _dio.get(category_wise_course_url, queryParameters: params);
+      List responseJson = json.decode(response.data);
+      return responseJson.map((e) => CoursesResponse.fromJson(e)).toList();
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  Future<List<CoursesResponse>> getAllCourses() async {
+    try {
+      Response<String> response = await _dio.get(top_courses_url);
+      List responseJson = json.decode(response.data);
+      return responseJson.map((e) => CoursesResponse.fromJson(e)).toList();
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
 
   // Future<MovieResponse> getMovies() async {
   //   var params = {'api_key': apiKey, 'language': 'en-US', 'page': 1};
