@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_clone/bloc/get_all_courses_bloc.dart';
 import 'package:udemy_clone/bloc/get_courses_bloc.dart';
 import 'package:udemy_clone/model/categories_response.dart';
 import 'package:udemy_clone/model/courses_response.dart';
@@ -19,7 +20,7 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    coursesBloc..getAllCourses();
+    allCoursesBloc..getAllCourses();
   }
 
   @override
@@ -66,7 +67,7 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
         ],
       ),
       body: StreamBuilder<List<CoursesResponse>>(
-          stream: coursesBloc.subject.stream,
+          stream: allCoursesBloc.subject.stream,
           builder: (ctx, AsyncSnapshot<List<CoursesResponse>> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data[0].error != null &&
@@ -74,11 +75,30 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
                 return _errorWidget(snapshot.data[0].error);
               }
               return _mainWidget(snapshot.data);
-            } else {
+            } else if (snapshot.hasError) {
               return _errorWidget(snapshot.error);
+            } else {
+              return _buildLoadingWidget();
             }
           }),
     );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
   }
 
   Widget _errorWidget(String error) {

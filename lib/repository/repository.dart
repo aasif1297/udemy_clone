@@ -6,6 +6,8 @@ import 'package:udemy_clone/model/categories_response.dart';
 import 'package:udemy_clone/model/courses_response.dart';
 import 'package:udemy_clone/model/login_response.dart';
 
+import '../model/courses_response.dart';
+
 class MainRepository {
   static String mainUrl = "https://demo.academy-lms.com/default/index.php/api";
 
@@ -14,6 +16,18 @@ class MainRepository {
   var login_url = '$mainUrl/login';
   var category_wise_course_url = '$mainUrl/category_wise_course';
   var top_courses_url = "$mainUrl/top_courses";
+  var courses_by_search_url = "$mainUrl/courses_by_search_string";
+
+  Future<List<CoursesResponse>> getAllCourses() async {
+    try {
+      Response<String> response = await _dio.get(courses_by_search_url);
+      List responseJson = json.decode(response.data);
+      return responseJson.map((e) => CoursesResponse.fromJson(e)).toList();
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
 
   Future<LoginResponse> login(String email, String password) async {
     var params = {'email': email, 'password': password};
@@ -42,7 +56,8 @@ class MainRepository {
     var params = {'category_id': id};
 
     try {
-      Response<String> response = await _dio.get(category_wise_course_url, queryParameters: params);
+      Response<String> response =
+          await _dio.get(category_wise_course_url, queryParameters: params);
       List responseJson = json.decode(response.data);
       return responseJson.map((e) => CoursesResponse.fromJson(e)).toList();
     } catch (error, stacktrace) {
@@ -51,7 +66,7 @@ class MainRepository {
     }
   }
 
-  Future<List<CoursesResponse>> getAllCourses() async {
+  Future<List<CoursesResponse>> getAllTopCourses() async {
     try {
       Response<String> response = await _dio.get(top_courses_url);
       List responseJson = json.decode(response.data);

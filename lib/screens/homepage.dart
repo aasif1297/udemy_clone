@@ -4,6 +4,8 @@ import 'package:udemy_clone/screens/all_courses_screen.dart';
 import 'package:udemy_clone/screens/categories_screen.dart';
 import 'package:udemy_clone/screens/course_overview_screen.dart';
 import 'package:udemy_clone/screens/search_screen.dart';
+import 'package:udemy_clone/widgets/free_courses_widget.dart';
+import 'package:udemy_clone/widgets/top_categories_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,6 +20,12 @@ class _HomeScreenState extends State<HomeScreen> {
     "Law",
     "Farming",
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,31 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  SizedBox(
-                    height: 40,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _list.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (ctx, index) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          child: ActionChip(
-                              label: Text(
-                                '${_list[index]}',
-                                style: TextStyle(
-                                    fontFamily: "SF Pro Display Regular",
-                                    fontSize: 12,
-                                    color: Color(0xFF484747)),
-                              ),
-                              backgroundColor: Color(0xFFE1E1E1),
-                              onPressed: () {
-                                // update board with selection
-                              }),
-                        );
-                      },
-                    ),
-                  ),
+                  TopCategoriesWidget(),
                   SizedBox(
                     height: 20,
                   ),
@@ -229,101 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  SizedBox(
-                    height: 250,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 10,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (ctx, index) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => CourseOverviewScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                              margin: EdgeInsets.only(right: 20),
-                              width: MediaQuery.of(context).size.width / 1.5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: 130,
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.5,
-                                    decoration: new BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        color: Color(0xFFA2A2A2),
-                                        borderRadius: new BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        )),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    "UX Design - From Wireframe to Prototype logo",
-                                    style: TextStyle(
-                                        fontFamily: "SF Pro Display Regular",
-                                        fontSize: 18,
-                                        color: Color(0xFF262626)),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "Instructor Name Here",
-                                          style: TextStyle(
-                                              fontFamily:
-                                                  "SF Pro Display Regular",
-                                              fontSize: 11,
-                                              color: Color(0xFF262626)),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Container(
-                                        child: RatingBar(
-                                          initialRating: 3,
-                                          minRating: 1,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: true,
-                                          itemCount: 5,
-                                          itemSize: 14.0,
-                                          itemPadding: EdgeInsets.symmetric(
-                                              horizontal: 0),
-                                          itemBuilder: (context, _) => Icon(
-                                            Icons.star,
-                                            color: Color(0xFFF5A424),
-                                          ),
-                                          onRatingUpdate: (rating) {
-                                            print(rating);
-                                          },
-                                        ),
-                                      ),
-                                      Text(
-                                        "4.6 (2,300)",
-                                        style: TextStyle(
-                                            fontFamily:
-                                                "SF Pro Display Regular",
-                                            fontSize: 11,
-                                            color: Color(0xFF262626)),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )),
-                        );
-                      },
-                    ),
-                  ),
+                  FreeCoursesWidget(),
                   SizedBox(
                     height: 5,
                   ),

@@ -6,8 +6,11 @@ import 'package:udemy_clone/screens/search_screen.dart';
 
 class CoursesByIdScreen extends StatefulWidget {
   final String id;
+  final String category;
+  final int no_of_courses;
 
-  const CoursesByIdScreen({Key key, this.id}) : super(key: key);
+  const CoursesByIdScreen({Key key, this.id, this.category, this.no_of_courses})
+      : super(key: key);
 
   @override
   _CoursesByIdScreenState createState() => _CoursesByIdScreenState();
@@ -32,7 +35,7 @@ class _CoursesByIdScreenState extends State<CoursesByIdScreen>
         elevation: 0,
         leading: null,
         title: Text(
-          "All Courses",
+          "${widget.category} Courses",
           style: TextStyle(
             fontFamily: "SF Pro Display Regular",
           ),
@@ -67,20 +70,41 @@ class _CoursesByIdScreenState extends State<CoursesByIdScreen>
               })
         ],
       ),
-      body: StreamBuilder<List<CoursesResponse>>(
-          stream: coursesBloc.subjectById.stream,
-          builder: (ctx, AsyncSnapshot<List<CoursesResponse>> snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data[0].error != null &&
-                  snapshot.data[0].error.length > 0) {
-                return _errorWidget(snapshot.data[0].error);
-              }
-              return _mainWidget(snapshot.data);
-            } else {
-              return _errorWidget(snapshot.error);
-            }
-          }),
+      body: (widget.no_of_courses > 0)
+          ? StreamBuilder<List<CoursesResponse>>(
+              stream: coursesBloc.subjectById.stream,
+              builder: (ctx, AsyncSnapshot<List<CoursesResponse>> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data[0].error != null &&
+                      snapshot.data[0].error.length > 0) {
+                    return _errorWidget(snapshot.data[0].error);
+                  }
+                  return _mainWidget(snapshot.data);
+                } else if (snapshot.hasError) {
+                  return _errorWidget(snapshot.error);
+                } else {
+                  return _buildLoadingWidget();
+                }
+              })
+          : _errorWidget("No Courses Available"),
     );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
   }
 
   Widget _errorWidget(String error) {

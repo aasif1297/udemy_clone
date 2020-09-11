@@ -3,6 +3,8 @@ import 'package:udemy_clone/bloc/get_categories_bloc.dart';
 import 'package:udemy_clone/model/categories_response.dart';
 import 'package:udemy_clone/screens/categories_screen.dart';
 
+import 'courses_by_id_screen.dart';
+
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -48,11 +50,30 @@ class _SearchScreenState extends State<SearchScreen> {
                 return _errorWidget(snapshot.data[0].error);
               }
               return _mainWidget(snapshot.data);
-            } else {
+            } else if (snapshot.hasError) {
               return _errorWidget(snapshot.error);
+            } else {
+              return _buildLoadingWidget();
             }
           }),
     );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
   }
 
   Widget _errorWidget(String error) {
@@ -194,42 +215,52 @@ class _SearchScreenState extends State<SearchScreen> {
                   childAspectRatio: 1.7,
                 ),
                 itemBuilder: (_, index) {
-                  return Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Color(0xFFA2A2A2),
-                            shape: BoxShape.rectangle,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15, bottom: 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${response[index].name}",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontFamily: "SF Pro Display Regular",
-                                  color: Colors.white,
-                                  fontSize: 18),
-                            ),
-                            Text(
-                              "${response[index].numberOfCourses}",
-                              style: TextStyle(
-                                  fontFamily: "SF Pro Display Regular",
-                                  color: Colors.white,
-                                  fontSize: 10),
-                            ),
-                          ],
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CoursesByIdScreen(
+                                id: response[index].id,
+                                category: response[index].name,
+                                no_of_courses: response[index].numberOfCourses,
+                              )));
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFA2A2A2),
+                              shape: BoxShape.rectangle,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
-                    ],
+                        Container(
+                          margin: EdgeInsets.only(left: 15, bottom: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${response[index].name}",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontFamily: "SF Pro Display Regular",
+                                    color: Colors.white,
+                                    fontSize: 18),
+                              ),
+                              Text(
+                                "${response[index].numberOfCourses}",
+                                style: TextStyle(
+                                    fontFamily: "SF Pro Display Regular",
+                                    color: Colors.white,
+                                    fontSize: 10),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   );
                 },
                 itemCount: 6,

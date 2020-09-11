@@ -54,11 +54,30 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 return _errorWidget(snapshot.data[0].error);
               }
               return _mainWidget(snapshot.data);
-            } else {
+            } else if (snapshot.hasError) {
               return _errorWidget(snapshot.error);
+            } else {
+              return _buildLoadingWidget();
             }
           }),
     );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
   }
 
   Widget _errorWidget(String error) {
@@ -125,7 +144,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 CoursesByIdScreen(
-                                                    id: response[index].id)));
+                                                  id: response[index].id,
+                                                  category:
+                                                      response[index].name,
+                                                  no_of_courses: response[index]
+                                                      .numberOfCourses,
+                                                )));
                                   },
                                   child: Stack(
                                     children: [

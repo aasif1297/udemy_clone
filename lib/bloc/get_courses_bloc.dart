@@ -15,8 +15,8 @@ class CoursesBloc {
     _subjectById.sink.add(response);
   }
 
-  getAllCourses() async {
-    List<CoursesResponse> response = await _mainRepository.getAllCourses();
+  getAllTopCourses() async {
+    List<CoursesResponse> response = await _mainRepository.getAllTopCourses();
     _subject.sink.add(response);
   }
 
