@@ -31,9 +31,6 @@ class _CoursePurchaseScreenState extends State<CoursePurchaseScreen> {
           url =
               '${_mainRepository.course_purchase_url}${auth_token}/${widget.course_id}';
         });
-
-        print(auth_token);
-        print(url);
       }
     });
   }
@@ -49,7 +46,6 @@ class _CoursePurchaseScreenState extends State<CoursePurchaseScreen> {
       initialUrl: url,
       javascriptMode: JavascriptMode.unrestricted,
     );
-    // return Container();
   }
 
   Widget _buildLoadingWidget() {

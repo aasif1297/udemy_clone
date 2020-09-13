@@ -6,6 +6,7 @@ import 'package:udemy_clone/model/categories_response.dart';
 import 'package:udemy_clone/model/course_detail_response.dart';
 import 'package:udemy_clone/model/courses_response.dart';
 import 'package:udemy_clone/model/login_response.dart';
+import 'package:udemy_clone/model/my_courses_response.dart';
 
 import '../model/courses_response.dart';
 
@@ -21,9 +22,24 @@ class MainRepository {
   var course_details_by_id = "$mainUrl/course_details_by_id";
   var course_purchase_url =
       "https://www.demo.academy-lms.com/default/index.php/home/course_purchase/";
+  var my_courses_url = "$mainUrl/my_courses";
 
-  Future<List<CourseDetailResponse>> getCourseDetailsById(String id) async {
-    var params = {"course_id": id};
+  Future<List<MyCoursesResponse>> getMyCourses(String token) async {
+    var params = {"auth_token": token};
+    try {
+      Response<String> response =
+          await _dio.get(my_courses_url, queryParameters: params);
+      List responseJson = json.decode(response.data);
+      return responseJson.map((e) => MyCoursesResponse.fromJson(e)).toList();
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  Future<List<CourseDetailResponse>> getCourseDetailsById(
+      String id, String token) async {
+    var params = {"auth_token": token, "course_id": id};
     try {
       Response<String> response =
           await _dio.get(course_details_by_id, queryParameters: params);

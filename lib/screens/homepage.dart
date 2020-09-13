@@ -5,6 +5,7 @@ import 'package:udemy_clone/screens/categories_screen.dart';
 import 'package:udemy_clone/screens/course_overview_screen.dart';
 import 'package:udemy_clone/screens/search_screen.dart';
 import 'package:udemy_clone/widgets/free_courses_widget.dart';
+import 'package:udemy_clone/widgets/ongoing_courses_widget.dart';
 import 'package:udemy_clone/widgets/top_categories_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -237,23 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 180,
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 1,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16.0,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        if (index % 2 == 0) {
-                          return _buildCarousel(context, index ~/ 2);
-                        } else {
-                          return Divider();
-                        }
-                      },
-                    ),
-                  ),
+                  OnGoingCoursesWidget(),
                   SizedBox(
                     height: 10,
                   )
@@ -262,121 +247,5 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ]),
         ));
-  }
-
-  Widget _buildCarousel(BuildContext context, int carouselIndex) {
-    return SizedBox(
-      height: 150,
-      child: PageView.builder(
-        itemCount: 5,
-        physics: BouncingScrollPhysics(),
-        controller: PageController(viewportFraction: 1),
-        itemBuilder: (BuildContext context, int itemIndex) {
-          return _itemWidget(context, carouselIndex, itemIndex);
-        },
-      ),
-    );
-  }
-
-  Widget _itemWidget(BuildContext context, int carouselIndex, int itemIndex) {
-    return Stack(
-      children: [
-        Container(
-            margin: EdgeInsets.only(left: 15, top: 5, bottom: 5, right: 5),
-            width: MediaQuery.of(context).size.width,
-            child: Card(
-              elevation: 3.5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Container(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(flex: 1, child: Container()),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(
-                            left: 12,
-                            right: 15,
-                            top: 15,
-                          ),
-                          child: Text(
-                            "UX Design - From Wireframe to Prototype logo UX Design",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontFamily: "SF Pro Display Regular",
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF616161)),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                            left: 12,
-                            right: 10,
-                            top: 5,
-                          ),
-                          child: Text(
-                            "Jerry Gerige",
-                            style: TextStyle(
-                                fontFamily: "SF Pro Display Regular",
-                                fontSize: 10,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xFF969696)),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: 12, right: 15, top: 20, bottom: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "35% Completed",
-                                style: TextStyle(
-                                    fontFamily: "SF Pro Display Regular",
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFFF93B3B)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: 12, right: 15, top: 0, bottom: 15),
-                          child: LinearProgressIndicator(
-                            backgroundColor: Color(0xFFE8E8E8),
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Color(0xFFF93B3B)),
-                            value: 0.8,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )),
-            )),
-        Container(
-          margin: EdgeInsets.only(left: 0, right: 10, top: 23.8),
-          height: 80,
-          width: 130,
-          decoration: new BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Color(0xFFA2A2A2),
-              borderRadius: new BorderRadius.all(
-                Radius.circular(10.0),
-              )),
-        )
-      ],
-    );
   }
 }
