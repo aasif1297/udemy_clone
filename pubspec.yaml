@@ -39,6 +39,7 @@ dependencies:
   bloc: ^6.0.2
   rxdart: ^0.24.1
   shared_preferences: any
+  webview_flutter: ^0.3.22+1
 
 dev_dependencies:
   flutter_test:

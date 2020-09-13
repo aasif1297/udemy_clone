@@ -1,4 +1,6 @@
-class CoursesResponse {
+import 'package:udemy_clone/model/sections.dart';
+
+class CourseDetailResponse {
   String id;
   String title;
   String shortDescription;
@@ -18,7 +20,7 @@ class CoursesResponse {
   String videoUrl;
   String dateAdded;
   String lastModified;
-  String visibility;
+  Null visibility;
   String isTopCourse;
   String isAdmin;
   String status;
@@ -31,9 +33,13 @@ class CoursesResponse {
   String instructorName;
   int totalEnrollment;
   String shareableLink;
+  List<Sections> sections;
+  bool isWishlisted;
+  bool isPurchased;
+  List<String> includes;
   String error;
 
-  CoursesResponse(
+  CourseDetailResponse(
       {this.id,
       this.title,
       this.shortDescription,
@@ -66,9 +72,13 @@ class CoursesResponse {
       this.instructorName,
       this.totalEnrollment,
       this.shareableLink,
+      this.sections,
+      this.isWishlisted,
+      this.isPurchased,
+      this.includes,
       this.error});
 
-  CoursesResponse.fromJson(Map<String, dynamic> json) {
+  CourseDetailResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     shortDescription = json['short_description'];
@@ -101,42 +111,15 @@ class CoursesResponse {
     instructorName = json['instructor_name'];
     totalEnrollment = json['total_enrollment'];
     shareableLink = json['shareable_link'];
-    error = "";
-  }
-
-  CoursesResponse.withError(String error) {
-    id = "";
-    title = "";
-    shortDescription = "";
-    description = "";
-    outcomes = null;
-    language = "";
-    categoryId = "";
-    subCategoryId = "";
-    section = "";
-    requirements = null;
-    price = "";
-    discountFlag = "";
-    discountedPrice = "";
-    level = "";
-    userId = "";
-    thumbnail = "";
-    videoUrl = "";
-    dateAdded = "";
-    lastModified = "";
-    visibility = "";
-    isTopCourse = "";
-    isAdmin = "";
-    status = "";
-    courseOverviewProvider = "";
-    metaKeywords = "";
-    metaDescription = "";
-    isFreeCourse = "";
-    rating = 0;
-    numberOfRatings = 0;
-    instructorName = "";
-    totalEnrollment = 0;
-    shareableLink = "";
+    if (json['sections'] != null) {
+      sections = new List<Sections>();
+      json['sections'].forEach((v) {
+        sections.add(new Sections.fromJson(v));
+      });
+    }
+    isWishlisted = json['is_wishlisted'];
+    isPurchased = json['is_purchased'];
+    includes = json['includes'].cast<String>();
     error = "";
   }
 
@@ -174,6 +157,12 @@ class CoursesResponse {
     data['instructor_name'] = this.instructorName;
     data['total_enrollment'] = this.totalEnrollment;
     data['shareable_link'] = this.shareableLink;
+    if (this.sections != null) {
+      data['sections'] = this.sections.map((v) => v.toJson()).toList();
+    }
+    data['is_wishlisted'] = this.isWishlisted;
+    data['is_purchased'] = this.isPurchased;
+    data['includes'] = this.includes;
     return data;
   }
 }

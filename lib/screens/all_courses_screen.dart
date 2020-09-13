@@ -3,6 +3,7 @@ import 'package:udemy_clone/bloc/get_all_courses_bloc.dart';
 import 'package:udemy_clone/bloc/get_courses_bloc.dart';
 import 'package:udemy_clone/model/categories_response.dart';
 import 'package:udemy_clone/model/courses_response.dart';
+import 'package:udemy_clone/screens/course_overview_screen.dart';
 import 'package:udemy_clone/screens/notifications_screen.dart';
 import 'package:udemy_clone/screens/search_screen.dart';
 
@@ -277,123 +278,131 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
   }
 
   Widget _itemWidget(List<CoursesResponse> results, int index) {
-    return Stack(
-      children: [
-        Container(
-            margin: EdgeInsets.only(left: 30, top: 5, bottom: 5),
-            width: MediaQuery.of(context).size.width / 1.1,
-            child: Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Container(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(flex: 1, child: Container()),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(
-                            left: 35,
-                            right: 15,
-                            top: 15,
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => CourseOverviewScreen(
+                  course: results[index],
+                )));
+      },
+      child: Stack(
+        children: [
+          Container(
+              margin: EdgeInsets.only(left: 30, top: 5, bottom: 5),
+              width: MediaQuery.of(context).size.width / 1.1,
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Container(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 1, child: Container()),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(
+                              left: 35,
+                              right: 15,
+                              top: 15,
+                            ),
+                            child: Text(
+                              "${results[index].title}",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontFamily: "SF Pro Display Regular",
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF616161)),
+                            ),
                           ),
-                          child: Text(
-                            "${results[index].title}",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontFamily: "SF Pro Display Regular",
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF616161)),
+                          Container(
+                            padding: EdgeInsets.only(
+                              left: 35,
+                              right: 10,
+                              top: 5,
+                            ),
+                            child: Text(
+                              "${results[index].instructorName}",
+                              style: TextStyle(
+                                  fontFamily: "SF Pro Display Regular",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  color: Color(0xFF969696)),
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                            left: 35,
-                            right: 10,
-                            top: 5,
-                          ),
-                          child: Text(
-                            "${results[index].instructorName}",
-                            style: TextStyle(
-                                fontFamily: "SF Pro Display Regular",
-                                fontSize: 12,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xFF969696)),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: 35, right: 10, top: 20, bottom: 15),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                "${results[index].price}",
-                                style: TextStyle(
-                                    fontFamily: "SF Pro Display Regular",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xFF969696)),
-                              )),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 4),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                    color: Color(0xFF80D03C),
-                                    shape: BoxShape.rectangle),
-                                child: Text(
-                                  "${results[index].rating}",
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: 35, right: 10, top: 20, bottom: 15),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: Text(
+                                  "${results[index].price}",
                                   style: TextStyle(
                                       fontFamily: "SF Pro Display Regular",
-                                      color: Colors.white),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      color: Color(0xFF969696)),
+                                )),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                      color: Color(0xFF80D03C),
+                                      shape: BoxShape.rectangle),
+                                  child: Text(
+                                    "${results[index].rating}",
+                                    style: TextStyle(
+                                        fontFamily: "SF Pro Display Regular",
+                                        color: Colors.white),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "(${results[index].numberOfRatings})",
-                                style: TextStyle(
-                                    fontFamily: "SF Pro Display Regular",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xFF969696)),
-                              )
-                            ],
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "(${results[index].numberOfRatings})",
+                                  style: TextStyle(
+                                      fontFamily: "SF Pro Display Regular",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      color: Color(0xFF969696)),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                        ],
+                      ),
+                    )
+                  ],
+                )),
               )),
-            )),
-        Container(
-          margin: EdgeInsets.only(left: 10, right: 10, top: 23.8),
-          height: 100,
-          width: 150,
-          decoration: new BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Color(0xFFA2A2A2),
-              borderRadius: new BorderRadius.all(
-                Radius.circular(10.0),
-              ),
-              image: DecorationImage(
-                  image: NetworkImage(results[index].thumbnail),
-                  fit: BoxFit.cover)),
-        )
-      ],
+          Container(
+            margin: EdgeInsets.only(left: 10, right: 10, top: 23.8),
+            height: 100,
+            width: 150,
+            decoration: new BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Color(0xFFA2A2A2),
+                borderRadius: new BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                image: DecorationImage(
+                    image: NetworkImage(results[index].thumbnail),
+                    fit: BoxFit.cover)),
+          )
+        ],
+      ),
     );
   }
 }

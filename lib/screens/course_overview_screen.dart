@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_clone/bloc/get_course_detail_by_id_bloc.dart';
+import 'package:udemy_clone/model/course_detail_response.dart';
+import 'package:udemy_clone/model/courses_response.dart';
+import 'package:udemy_clone/screens/course_purchase_screen.dart';
 import 'package:udemy_clone/screens/course_screen.dart';
 import 'package:udemy_clone/screens/instructor_profile_screen.dart';
 
 class CourseOverviewScreen extends StatefulWidget {
+  final CoursesResponse course;
+
+  const CourseOverviewScreen({Key key, this.course}) : super(key: key);
+  //const CoursesByIdScreen({Key key, this.id, this.category, this.no_of_courses})
+  // : super(key: key);
   @override
   _CourseOverviewScreenState createState() => _CourseOverviewScreenState();
 }
@@ -10,6 +19,8 @@ class CourseOverviewScreen extends StatefulWidget {
 class _CourseOverviewScreenState extends State<CourseOverviewScreen>
     with SingleTickerProviderStateMixin {
   final bodyGlobalKey = GlobalKey();
+  CourseDetailResponse _courseDetailResponse;
+  var price = "";
   final List<Widget> myTabs = [
     Tab(
       child: Container(
@@ -39,10 +50,15 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
 
   @override
   void initState() {
+    courseDetailByIdBloc..getCourseDetalById(widget.course.id);
     _scrollController = ScrollController();
-    // _scrollController.addListener(_scrollListener);
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_smoothScrollToTop);
+    setState(() {
+      price = (widget.course.price == "Free")
+          ? "${widget.course.price}"
+          : "GHC ${widget.course.price}";
+    });
 
     super.initState();
   }
@@ -72,6 +88,32 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
     });
   }
 
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
+  }
+
+  Widget _errorWidget(String error) {
+    return Center(
+      child: Text(
+        "$error",
+        style: TextStyle(color: Colors.black),
+      ),
+    );
+  }
+
   _buildTabContext3() => SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: Column(
@@ -92,211 +134,107 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
         ),
       );
 
-  _buildTabContext2() => Container(
-      margin: EdgeInsets.only(bottom: 50),
-      child: ListView(children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Introduction to User Interface",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: "Google Sans Medium",
-                      color: Color(0xFF999999)),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "1.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFFFF3939)),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "What is User Interface?",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF262626)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "02:56 mins",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF969696)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "2.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFFFF3939)),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "What is User Interface?",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF262626)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "02:56 mins",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF969696)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Divider(
-                  height: 2,
-                  color: Color(0xFFD7D7D7),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Understanding of elements",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: "Google Sans Medium",
-                      color: Color(0xFF999999)),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "3.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFFFF3939)),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Which tool is best for UI Design?",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF262626)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "02:56 mins",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF969696)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "4.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFFFF3939)),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Which tool is best for UI Design?",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF262626)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "02:56 mins",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF969696)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ]));
+  Widget _cirriculumnWidget(List<CourseDetailResponse> data) {
+    List<CourseDetailResponse> results = data;
+    return Container(
+        margin: EdgeInsets.only(bottom: 50),
+        child: ListView.builder(
+            itemCount: results[0].sections.length,
+            itemBuilder: (ctx, index) {
+              var sectionIndex = index;
+              return Card(
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${results[0].sections[sectionIndex].title}",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "Google Sans Medium",
+                                  color: Color(0xFF999999)),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount:
+                                    results[0].sections[index].lessons.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (ctx, index) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${index + 1}.",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "Google Sans Medium",
+                                            color: Color(0xFFFF3939)),
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${results[0].sections[sectionIndex].lessons[index].title}",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontFamily:
+                                                      "Google Sans Medium",
+                                                  color: Color(0xFF262626)),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              "${results[0].sections[sectionIndex].lessons[index].duration}",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily:
+                                                      "Google Sans Medium",
+                                                  color: Color(0xFF969696)),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          ])));
+            }));
+  }
+
+  _buildTabContext2() => StreamBuilder<List<CourseDetailResponse>>(
+      stream: courseDetailByIdBloc.subject.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data[0].error != null &&
+              snapshot.data[0].error.length > 0) {
+            return _errorWidget(snapshot.data[0].error);
+          }
+
+          _courseDetailResponse = snapshot.data[0];
+
+          return _cirriculumnWidget(snapshot.data);
+        } else if (snapshot.hasError) {
+          return _errorWidget(snapshot.error);
+        } else {
+          return _buildLoadingWidget();
+        }
+      });
 
   _buildTabContext() => Container(
         margin: EdgeInsets.only(bottom: 50),
@@ -305,7 +243,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
             Card(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -320,7 +258,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                       height: 30,
                     ),
                     Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Ruis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+                      "${widget.course.description}",
                       style: TextStyle(
                           fontSize: 12,
                           fontFamily: "Google Sans Medium",
@@ -350,72 +288,36 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                     SizedBox(
                       height: 30,
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF292929)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF292929)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF292929)),
-                          ),
-                        ),
-                      ],
-                    ),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: widget.course.outcomes.length,
+                        itemBuilder: (ctx, index) {
+                          print("");
+                          return Row(
+                            children: [
+                              Icon(
+                                Icons.check,
+                                color: Colors.red,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "${widget.course.outcomes[index]}",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: "Google Sans Medium",
+                                      color: Color(0xFF292929)),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          );
+                        }),
                     SizedBox(
                       height: 20,
                     ),
@@ -468,7 +370,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Jerry George",
+                                            "${widget.course.instructorName}",
                                             style: TextStyle(
                                                 color: Color(0xFF262626),
                                                 fontSize: 18,
@@ -651,7 +553,11 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
           Container(
             height: 250,
             width: double.infinity,
-            decoration: BoxDecoration(color: Colors.grey),
+            decoration: BoxDecoration(
+                color: Colors.grey,
+                image: DecorationImage(
+                    image: NetworkImage(widget.course.thumbnail),
+                    fit: BoxFit.cover)),
             child: Icon(
               Icons.play_circle_outline,
               color: Colors.white,
@@ -715,7 +621,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "UX Design - Learn all From Wireframe to Prototype logo UX Design",
+                              "${widget.course.title}",
                               style: TextStyle(
                                   fontSize: 17,
                                   fontFamily: "Google Sans Medium",
@@ -737,7 +643,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                                     );
                                   },
                                   child: Text(
-                                    "Jerry George",
+                                    "${widget.course.instructorName}",
                                     style: TextStyle(
                                         fontSize: 13,
                                         fontFamily: "Google Sans Medium",
@@ -753,7 +659,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                                       color: Color(0xFF80D138),
                                     ),
                                     child: Text(
-                                      "4.5",
+                                      "${widget.course.rating.toDouble()}",
                                       style: TextStyle(
                                           fontSize: 13,
                                           fontFamily: "Google Sans Medium",
@@ -763,7 +669,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 2),
                                     child: Text(
-                                      "(125)",
+                                      "(${widget.course.numberOfRatings})",
                                       style: TextStyle(
                                           fontSize: 13,
                                           fontFamily: "Google Sans Medium",
@@ -813,7 +719,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                     Expanded(
                         flex: 1,
                         child: Center(
-                          child: Text("GHC 25.00",
+                          child: Text("$price",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: "Google Sans Medium",
@@ -825,8 +731,9 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => CourseScreen(),
-                              ),
+                                  builder: (context) => CoursePurchaseScreen(
+                                        course_id: _courseDetailResponse.id,
+                                      )),
                             );
                           },
                           child: Container(
@@ -849,713 +756,6 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
         ],
       ),
     );
-  }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: Stack(
-  //       children: [
-  //         Container(
-  //           height: 250,
-  //           width: double.infinity,
-  //           decoration: BoxDecoration(color: Colors.grey),
-  //           child: Icon(
-  //             Icons.play_circle_outline,
-  //             color: Colors.white,
-  //             size: 55,
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.only(top: 190.0, left: 8, right: 8),
-  //           child: Scaffold(
-  //               backgroundColor: Color(0xFFF3F5F5),
-  //               appBar: AppBar(
-  //                 backgroundColor: Colors.white,
-  //                 leading: Container(),
-  //                 bottom: TabBar(
-  //                   labelPadding: EdgeInsets.symmetric(horizontal: 25),
-  //                   controller: _tabController,
-  //                   indicatorColor: Color(0xFFFF3939),
-  //                   indicatorSize: TabBarIndicatorSize.tab,
-  //                   indicatorWeight: 3.0,
-  //                   unselectedLabelColor: Color(0xFF999999),
-  //                   labelColor: Color(0xFFFF3939),
-  //                   isScrollable: true,
-  //                   tabs: [],
-  //                 ),
-  //               ),
-  //               body: SingleChildScrollView(
-  //                 child: Column(
-  //                   mainAxisSize: MainAxisSize.min,
-  //                   children: [
-  //                     SizedBox(
-  //                       height: (_tabController.index == 0)
-  //                           ? MediaQuery.of(context).size.height * 1.5
-  //                           : (_tabController.index == 1) ? 100 : 50,
-  //                       child: TabBarView(
-  //                         controller: _tabController,
-  //                         physics: NeverScrollableScrollPhysics(),
-  //                         children: [
-  //                           _aboutWidget(),
-  //                           _curriculumWidget(),
-  //                           _relatedWidget()
-  //                         ],
-  //                       ),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 10,
-  //                     ),
-  //                     Container(
-  //                       color: Colors.white,
-  //                       child: Row(
-  //                         children: [
-  //                           Expanded(
-  //                               flex: 1,
-  //                               child: Center(
-  //                                 child: Text("GHC 25.00",
-  //                                     style: TextStyle(
-  //                                       fontSize: 18,
-  //                                       fontFamily: "Google Sans Medium",
-  //                                     )),
-  //                               )),
-  //                           Expanded(
-  //                               flex: 2,
-  //                               child: InkWell(
-  //                                 onTap: () {},
-  //                                 child: Container(
-  //                                   padding: const EdgeInsets.symmetric(
-  //                                       vertical: 15),
-  //                                   decoration: BoxDecoration(
-  //                                     color: Color(0xFFFF3939),
-  //                                   ),
-  //                                   alignment: Alignment.center,
-  //                                   child: Text("Enroll Now",
-  //                                       style: TextStyle(
-  //                                         fontSize: 18,
-  //                                         fontFamily: "Google Sans Medium",
-  //                                         color: Colors.white,
-  //                                       )),
-  //                                 ),
-  //                               )),
-  //                         ],
-  //                       ),
-  //                     )
-  //                   ],
-  //                 ),
-  //               )),
-  //         ),
-  //         SafeArea(
-  //           child: Column(
-  //             children: [
-  //               Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: Row(
-  //                   children: [
-  //                     Expanded(
-  //                       child: InkWell(
-  //                         onTap: () {
-  //                           Navigator.pop(context);
-  //                         },
-  //                         child: Container(
-  //                           alignment: Alignment.centerLeft,
-  //                           child: Icon(
-  //                             Icons.navigate_before,
-  //                             color: Colors.white,
-  //                             size: 30,
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     Icon(
-  //                       Icons.share,
-  //                       color: Colors.white,
-  //                       size: 25,
-  //                     ),
-  //                     SizedBox(
-  //                       width: 15,
-  //                     ),
-  //                     Padding(
-  //                       padding: const EdgeInsets.only(right: 8),
-  //                       child: Icon(
-  //                         Icons.bookmark_border,
-  //                         color: Colors.white,
-  //                         size: 25,
-  //                       ),
-  //                     )
-  //                   ],
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  Widget _curriculumWidget() {
-    return SingleChildScrollView(
-      physics: NeverScrollableScrollPhysics(),
-      child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Introduction to User Interface",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: "Google Sans Medium",
-                        color: Color(0xFF999999)),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "1.",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFFFF3939)),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "What is User Interface?",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF262626)),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "02:56 mins",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF969696)),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "2.",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFFFF3939)),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "What is User Interface?",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF262626)),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "02:56 mins",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF969696)),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Divider(
-                    height: 2,
-                    color: Color(0xFFD7D7D7),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Understanding of elements",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: "Google Sans Medium",
-                        color: Color(0xFF999999)),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "3.",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFFFF3939)),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Which tool is best for UI Design?",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF262626)),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "02:56 mins",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF969696)),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "4.",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFFFF3939)),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Which tool is best for UI Design?",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF262626)),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "02:56 mins",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "Google Sans Medium",
-                                color: Color(0xFF969696)),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            ),
-          )),
-    );
-  }
-
-  Widget _aboutWidget() {
-    return SingleChildScrollView(
-      physics: NeverScrollableScrollPhysics(),
-      child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            children: [
-              Card(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Description",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFF262626)),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. Ruis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFF292929)),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "What you will learn",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFF262626)),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Google Sans Medium",
-                                  color: Color(0xFF292929)),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Google Sans Medium",
-                                  color: Color(0xFF292929)),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "Google Sans Medium",
-                                  color: Color(0xFF292929)),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Created by",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFF262626)),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 35,
-                              backgroundImage:
-                                  AssetImage('assets/images/udemy_logo.png'),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 0.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Jerry George",
-                                              style: TextStyle(
-                                                  color: Color(0xFF262626),
-                                                  fontSize: 18,
-                                                  fontFamily:
-                                                      "Google Sans Medium"),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "New jersey",
-                                              style: TextStyle(
-                                                  color: Color(0xFF999999),
-                                                  fontSize: 14,
-                                                  fontFamily:
-                                                      "Google Sans Medium"),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 0.0),
-                                        child: Text(
-                                          "View profile",
-                                          textAlign: TextAlign.end,
-                                          style: TextStyle(
-                                              color: Color(0xFF5C36FF),
-                                              fontSize: 14,
-                                              fontFamily: "Google Sans Medium"),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 0.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "886",
-                                                style: TextStyle(
-                                                    color: Color(0xFF292929),
-                                                    fontSize: 14,
-                                                    fontFamily:
-                                                        "Google Sans Medium"),
-                                              ),
-                                              Text(
-                                                "Subscribed",
-                                                style: TextStyle(
-                                                    color: Color(0xFF999999),
-                                                    fontSize: 12,
-                                                    fontFamily:
-                                                        "Google Sans Medium"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 0.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "39",
-                                                style: TextStyle(
-                                                    color: Color(0xFF292929),
-                                                    fontSize: 14,
-                                                    fontFamily:
-                                                        "Google Sans Medium"),
-                                              ),
-                                              Text(
-                                                "Courses",
-                                                style: TextStyle(
-                                                    color: Color(0xFF999999),
-                                                    fontSize: 12,
-                                                    fontFamily:
-                                                        "Google Sans Medium"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 0.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                      child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  3)),
-                                                      color: Color(0xFF80D138),
-                                                    ),
-                                                    child: Text(
-                                                      "4.0",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 14,
-                                                          fontFamily:
-                                                              "Google Sans Medium"),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  )),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Expanded(
-                                                      child: Text(
-                                                    "(272)",
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xFF292929),
-                                                        fontSize: 14,
-                                                        fontFamily:
-                                                            "Google Sans Medium"),
-                                                  ))
-                                                ],
-                                              ),
-                                              Text(
-                                                "Avg. Ratings",
-                                                style: TextStyle(
-                                                    color: Color(0xFF999999),
-                                                    fontSize: 12,
-                                                    fontFamily:
-                                                        "Google Sans Medium"),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          )),
-    );
-  }
-
-  Widget _relatedWidget() {
-    return Card();
   }
 
   Widget _itemWidget() {

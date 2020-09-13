@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:udemy_clone/model/categories_response.dart';
+import 'package:udemy_clone/model/course_detail_response.dart';
 import 'package:udemy_clone/model/courses_response.dart';
 import 'package:udemy_clone/model/login_response.dart';
 
@@ -17,6 +18,22 @@ class MainRepository {
   var category_wise_course_url = '$mainUrl/category_wise_course';
   var top_courses_url = "$mainUrl/top_courses";
   var courses_by_search_url = "$mainUrl/courses_by_search_string";
+  var course_details_by_id = "$mainUrl/course_details_by_id";
+  var course_purchase_url =
+      "https://www.demo.academy-lms.com/default/index.php/home/course_purchase/";
+
+  Future<List<CourseDetailResponse>> getCourseDetailsById(String id) async {
+    var params = {"course_id": id};
+    try {
+      Response<String> response =
+          await _dio.get(course_details_by_id, queryParameters: params);
+      List responseJson = json.decode(response.data);
+      return responseJson.map((e) => CourseDetailResponse.fromJson(e)).toList();
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
 
   Future<List<CoursesResponse>> getAllCourses() async {
     try {

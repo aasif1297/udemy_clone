@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_clone/model/course_detail_response.dart';
 import 'package:udemy_clone/screens/review_screen.dart';
 
 class CourseScreen extends StatefulWidget {
+  final CourseDetailResponse courseDetailResponse;
+
+  const CourseScreen({Key key, this.courseDetailResponse}) : super(key: key);
   @override
   _CourseScreenState createState() => _CourseScreenState();
 }
@@ -164,231 +168,93 @@ class _CourseScreenState extends State<CourseScreen>
       ]));
 
   _buildTabContext() => Container(
-          child: ListView(children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Introduction to User Interface",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFF999999)),
-                      ),
-                    ),
-                    Icon(
-                      Icons.bookmark_border,
-                      color: Color(0xFFFF3939),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "1.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFFFF3939)),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "What is User Interface?",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFFFF3939)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "02:56 mins",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF969696)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "2.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFFFF3939)),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "What is User Interface?",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF262626)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "02:56 mins",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF969696)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Divider(
-                  height: 2,
-                  color: Color(0xFFD7D7D7),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Understanding of elements",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: "Google Sans Medium",
-                            color: Color(0xFF999999)),
-                      ),
-                    ),
-                    Icon(
-                      Icons.bookmark_border,
-                      color: Color(0xFFFF3939),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "3.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFFFF3939)),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Which tool is best for UI Design?",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF262626)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "02:56 mins",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF969696)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "4.",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Google Sans Medium",
-                          color: Color(0xFFFF3939)),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Which tool is best for UI Design?",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF262626)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "02:56 mins",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Google Sans Medium",
-                              color: Color(0xFF969696)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ]));
+      child: ListView.builder(
+          itemCount: widget.courseDetailResponse.sections.length,
+          itemBuilder: (ctx, index) {
+            var sectionIndex = index;
+            return Card(
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "${widget.courseDetailResponse.sections[sectionIndex].title}",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "Google Sans Medium",
+                                      color: Color(0xFF999999)),
+                                ),
+                              ),
+                              Icon(
+                                Icons.bookmark_border,
+                                color: Color(0xFFFF3939),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: widget.courseDetailResponse
+                                  .sections[index].lessons.length,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (ctx, index) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${index + 1}.",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "Google Sans Medium",
+                                          color: Color(0xFFFF3939)),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${widget.courseDetailResponse.sections[sectionIndex].lessons[index].title}",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily:
+                                                    "Google Sans Medium",
+                                                color: Color(0xFF262626)),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "${widget.courseDetailResponse.sections[sectionIndex].lessons[index].duration}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily:
+                                                    "Google Sans Medium",
+                                                color: Color(0xFF969696)),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ])));
+          }));
 
   _buildTabContext2() => Container(
         child: ListView(

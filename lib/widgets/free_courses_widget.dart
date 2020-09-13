@@ -75,7 +75,9 @@ class _FreeCoursesWidgetState extends State<FreeCoursesWidget> {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CourseOverviewScreen(),
+                  builder: (context) => CourseOverviewScreen(
+                    course: results[index],
+                  ),
                 ),
               );
             },
