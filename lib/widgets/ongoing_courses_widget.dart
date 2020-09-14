@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udemy_clone/bloc/get_my_courses_bloc.dart';
-import 'package:udemy_clone/model/courses_response.dart';
 import 'package:udemy_clone/model/my_courses_response.dart';
 
 class OnGoingCoursesWidget extends StatefulWidget {
@@ -98,7 +97,7 @@ class _OnGoingCoursesWidgetState extends State<OnGoingCoursesWidget> {
     return SizedBox(
       height: 150,
       child: PageView.builder(
-        itemCount: 5,
+        itemCount: results.length,
         physics: BouncingScrollPhysics(),
         controller: PageController(viewportFraction: 1),
         itemBuilder: (BuildContext context, int itemIndex) {

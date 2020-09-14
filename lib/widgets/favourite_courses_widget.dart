@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:udemy_clone/bloc/get_fav_courses_bloc.dart';
+import 'package:udemy_clone/bloc/get_my_courses_bloc.dart';
+import 'package:udemy_clone/model/courses_response.dart';
 import 'package:udemy_clone/screens/course_overview_screen.dart';
 
 class FavouriteCoursesWidget extends StatefulWidget {
@@ -7,18 +11,69 @@ class FavouriteCoursesWidget extends StatefulWidget {
 }
 
 class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
+  SharedPreferences sharedPreferences;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+
+      var result = sharedPreferences.getString("token");
+
+      if (result != null) {
+        favCoursesBloc..getFavCourses(result);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return favWidget();
+    return StreamBuilder<List<CoursesResponse>>(
+        stream: favCoursesBloc.subject.stream,
+        builder: (ctx, AsyncSnapshot<List<CoursesResponse>> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data[0].error != null &&
+                snapshot.data[0].error.length > 0) {
+              return _errorWidget(snapshot.data[0].error);
+            }
+            return favWidget(snapshot.data);
+          } else if (snapshot.hasError) {
+            return _errorWidget(snapshot.error);
+          } else {
+            return _buildLoadingWidget();
+          }
+        });
   }
 
-  Widget favWidget() {
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
+  }
+
+  Widget _errorWidget(String error) {
+    return Center(
+      child: Text(
+        "$error",
+        style: TextStyle(color: Colors.black),
+      ),
+    );
+  }
+
+  Widget favWidget(List<CoursesResponse> data) {
+    List<CoursesResponse> results = data;
     return SingleChildScrollView(
       physics: NeverScrollableScrollPhysics(),
       child: Container(
@@ -36,7 +91,7 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                 child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: 10,
+                    itemCount: results.length,
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
@@ -46,7 +101,7 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                               ),
                             );
                           },
-                          child: _itemWidget2());
+                          child: _itemWidget2(results, index));
                     }))
           ],
         ),
@@ -54,7 +109,7 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
     );
   }
 
-  Widget _itemWidget2() {
+  Widget _itemWidget2(List<CoursesResponse> data, int index) {
     return Stack(
       children: [
         Container(
@@ -79,7 +134,7 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                             top: 10,
                           ),
                           child: Text(
-                            "UX Design - From Wireframe to Prototype logo UX Design",
+                            "${data[index].title}",
                             style: TextStyle(
                                 fontFamily: "SF Pro Display Regular",
                                 fontSize: 14,
@@ -94,7 +149,7 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                             top: 5,
                           ),
                           child: Text(
-                            "Jerry Gerige",
+                            "${data[index].instructorName}",
                             style: TextStyle(
                                 fontFamily: "SF Pro Display Regular",
                                 fontSize: 12,
@@ -112,7 +167,7 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                             children: [
                               Expanded(
                                   child: Text(
-                                "\$25.00",
+                                "${data[index].price}",
                                 style: TextStyle(
                                     fontFamily: "SF Pro Display Regular",
                                     fontSize: 14,
@@ -128,7 +183,7 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                                     color: Color(0xFF80D03C),
                                     shape: BoxShape.rectangle),
                                 child: Text(
-                                  "4.5",
+                                  "${data[index].rating}",
                                   style: TextStyle(
                                       fontFamily: "SF Pro Display Regular",
                                       color: Colors.white),
@@ -138,7 +193,7 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                                 width: 10,
                               ),
                               Text(
-                                "(125)",
+                                "(${data[index].numberOfRatings})",
                                 style: TextStyle(
                                     fontFamily: "SF Pro Display Regular",
                                     fontSize: 14,
@@ -163,10 +218,12 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
           width: 150,
           decoration: new BoxDecoration(
               shape: BoxShape.rectangle,
-              color: Color(0xFFA2A2A2),
               borderRadius: new BorderRadius.all(
                 Radius.circular(10.0),
-              )),
+              ),
+              image: DecorationImage(
+                  image: NetworkImage(data[index].thumbnail),
+                  fit: BoxFit.cover)),
         )
       ],
     );

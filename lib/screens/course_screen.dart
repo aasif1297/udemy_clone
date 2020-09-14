@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:udemy_clone/model/course_detail_response.dart';
 import 'package:udemy_clone/screens/review_screen.dart';
+import 'package:udemy_clone/widgets/my_ongoing_course_widget.dart';
 
 class CourseScreen extends StatefulWidget {
   final CourseDetailResponse courseDetailResponse;
@@ -606,7 +607,7 @@ class _CourseScreenState extends State<CourseScreen>
                 controller: _tabController,
                 children: [
                   _buildTabContext(),
-                  _buildTabContext2(),
+                  MyOnGoingCourseWidget(),
                   _buildTabContext3()
                 ],
               ),

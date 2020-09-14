@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:udemy_clone/bloc/get_my_courses_bloc.dart';
+import 'package:udemy_clone/model/my_courses_response.dart';
 import 'package:udemy_clone/screens/course_overview_screen.dart';
 
 class MyOnGoingCourseWidget extends StatefulWidget {
@@ -7,12 +10,70 @@ class MyOnGoingCourseWidget extends StatefulWidget {
 }
 
 class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
+  SharedPreferences sharedPreferences;
+
   @override
-  Widget build(BuildContext context) {
-    return _mainWidget(false, "35% Completed", 0.35);
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+
+      var result = sharedPreferences.getString("token");
+
+      if (result != null) {
+        myCoursesBloc..getMyCourses(result);
+      }
+    });
   }
 
-  Widget _mainWidget(bool completed, String progress, double _value) {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<MyCoursesResponse>>(
+        stream: myCoursesBloc.subject.stream,
+        builder: (ctx, AsyncSnapshot<List<MyCoursesResponse>> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data[0].error != null &&
+                snapshot.data[0].error.length > 0) {
+              return _errorWidget(snapshot.data[0].error);
+            }
+            return _mainWidget(snapshot.data);
+          } else if (snapshot.hasError) {
+            return _errorWidget(snapshot.error);
+          } else {
+            return _buildLoadingWidget();
+          }
+        });
+  }
+
+  Widget _errorWidget(String error) {
+    return Center(
+      child: Text(
+        "$error",
+        style: TextStyle(color: Colors.black),
+      ),
+    );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
+  }
+
+  Widget _mainWidget(List<MyCoursesResponse> data) {
+    var result = data.where((element) => element.completion != 100).toList();
     return SingleChildScrollView(
       child: Container(
           width: MediaQuery.of(context).size.width,
@@ -44,8 +105,7 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
                                       ),
                                     );
                                   },
-                                  child:
-                                      _itemWidget(completed, progress, _value));
+                                  child: _itemWidget(result, index));
                             }))
                   ],
                 ),
@@ -55,7 +115,7 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
     );
   }
 
-  Widget _itemWidget(bool completed, String progress, double _value) {
+  Widget _itemWidget(List<MyCoursesResponse> data, int index) {
     return Stack(
       children: [
         Container(
@@ -84,7 +144,7 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
                             top: 15,
                           ),
                           child: Text(
-                            "UX Design - From Wireframe to Prototype logo UX Design",
+                            "${data[index].title}",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -101,7 +161,7 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
                             top: 5,
                           ),
                           child: Text(
-                            "Jerry Gerige",
+                            "${data[index].instructorName}",
                             style: TextStyle(
                                 fontFamily: "SF Pro Display Regular",
                                 fontSize: 12,
@@ -116,14 +176,12 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                "$progress",
+                                "${data[index].completion}% Completed",
                                 style: TextStyle(
                                     fontFamily: "SF Pro Display Regular",
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
-                                    color: (!completed)
-                                        ? Color(0xFFF93B3B)
-                                        : Color(0xFF27DF0B)),
+                                    color: Color(0xFFF93B3B)),
                               ),
                             ],
                           ),
@@ -134,10 +192,8 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
                           child: LinearProgressIndicator(
                             backgroundColor: Color(0xFFE8E8E8),
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                (!completed)
-                                    ? Color(0xFFF93B3B)
-                                    : Color(0xFF27DF0B)),
-                            value: _value,
+                                Color(0xFFF93B3B)),
+                            value: (data[index].completion.toDouble() / 100),
                           ),
                         ),
                       ],
@@ -152,7 +208,9 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
           width: 150,
           decoration: new BoxDecoration(
               shape: BoxShape.rectangle,
-              color: Color(0xFFA2A2A2),
+              image: DecorationImage(
+                  image: NetworkImage(data[index].thumbnail),
+                  fit: BoxFit.cover),
               borderRadius: new BorderRadius.all(
                 Radius.circular(10.0),
               )),

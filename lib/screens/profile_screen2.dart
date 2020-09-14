@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:udemy_clone/bloc/get_user_detail_bloc.dart';
+import 'package:udemy_clone/model/update_user_detail_repsponse.dart';
+import 'package:udemy_clone/model/user_detail.dart';
+import 'package:udemy_clone/repository/repository.dart';
 
 class ProfileScreen2 extends StatefulWidget {
   @override
@@ -6,34 +11,130 @@ class ProfileScreen2 extends StatefulWidget {
 }
 
 class _ProfileScreen2State extends State<ProfileScreen2> {
+  SharedPreferences sharedPreferences;
+  UpdateUserDetailsResponse _updateUserDetailsResponse;
+  UserDetails _userDetails;
+  var token;
+
+  TextEditingController _firstNameController,
+      _lastNameController,
+      _emailController,
+      _facebookController,
+      _twitterController,
+      _linkedinController;
+
+  bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+
+      var result = sharedPreferences.getString("token");
+
+      if (result != null) {
+        setState(() {
+          token = result;
+        });
+        userDetailBloc..getUserDetails(result);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF3F5F5),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFFF393A),
-        elevation: 0,
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-              size: 20,
+        backgroundColor: Color(0xFFF3F5F5),
+        appBar: AppBar(
+          backgroundColor: Color(0xFFFF393A),
+          elevation: 0,
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 20,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          title: Text(
+            "Edit Profile",
+            style: TextStyle(
+              fontFamily: "SF Pro Display Regular",
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        title: Text(
-          "Edit Profile",
-          style: TextStyle(
-            fontFamily: "SF Pro Display Regular",
           ),
         ),
+        body: StreamBuilder<UserDetails>(
+            stream: userDetailBloc.subject.stream,
+            builder: (ctx, AsyncSnapshot<UserDetails> snapshot) {
+              if (snapshot.hasData) {
+                _userDetails = snapshot.data;
+
+                if (_firstNameController == null) {
+                  _firstNameController = TextEditingController(
+                      text: (_userDetails.firstName != null)
+                          ? _userDetails.firstName
+                          : "");
+                  _lastNameController = TextEditingController(
+                      text: (_userDetails.lastName != null)
+                          ? _userDetails.lastName
+                          : "");
+                  _emailController = TextEditingController(
+                      text: (_userDetails.email != null)
+                          ? _userDetails.email
+                          : "");
+                  _facebookController = TextEditingController(
+                      text: (_userDetails.facebook != null)
+                          ? _userDetails.facebook
+                          : "");
+                  _twitterController = TextEditingController(
+                      text: (_userDetails.twitter != null)
+                          ? _userDetails.twitter
+                          : "");
+                  _linkedinController = TextEditingController(
+                      text: (_userDetails.linkedin != null)
+                          ? _userDetails.linkedin
+                          : "");
+                }
+
+                return _mainWidget(snapshot.data);
+              } else if (snapshot.hasError) {
+                return _errorWidget(snapshot.error);
+              } else {
+                return _buildLoadingWidget();
+              }
+            }));
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
+  }
+
+  Widget _errorWidget(String error) {
+    return Center(
+      child: Text(
+        "$error",
+        style: TextStyle(color: Colors.black),
       ),
-      body: _mainWidget(),
     );
   }
 
-  Widget _mainWidget() {
+  Widget _mainWidget(UserDetails data) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,11 +146,12 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
               children: [
                 Positioned(
                     top: 35,
-                    child: CircleAvatar(
-                      radius: 55,
-                      backgroundImage:
-                          AssetImage('assets/images/udemy_logo.png'),
-                    )),
+                    child: (data.image != null)
+                        ? CircleAvatar(
+                            radius: 55,
+                            backgroundImage: NetworkImage(data.image),
+                          )
+                        : Container()),
                 Positioned(
                   top: 45,
                   right: 130,
@@ -76,38 +178,86 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
           SizedBox(
             height: 10,
           ),
-          _textField("First Name"),
-          _textField("Last Name"),
-          _textField("Email"),
-          _textField("Facebook Link"),
-          _textField("Twitter Link"),
-          _textField("LinkedIn Link"),
+          _textField("First Name", _firstNameController),
+          _textField("Last Name", _lastNameController),
+          _textField("Email", _emailController),
+          _textField("Facebook Link", _facebookController),
+          _textField("Twitter Link", _twitterController),
+          _textField("LinkedIn Link", _linkedinController),
           SizedBox(
             height: 20,
           ),
           Container(
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.symmetric(horizontal: 12),
-            child: RaisedButton(
-                color: Color(0xFFFF393A),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-                child: Text(
-                  "Update Profile",
-                  style: TextStyle(
-                      fontFamily: "SF Pro Display Regular",
-                      color: Color(0xFFFFF4F4)),
-                ),
-                onPressed: () {}),
+            child: (!_loading)
+                ? RaisedButton(
+                    color: Color(0xFFFF393A),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                    child: Text(
+                      "Update Profile",
+                      style: TextStyle(
+                          fontFamily: "SF Pro Display Regular",
+                          color: Color(0xFFFFF4F4)),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        _loading = true;
+                      });
+
+                      var user = UserDetails(
+                          id: _userDetails.id,
+                          firstName: _firstNameController.text,
+                          lastName: _lastNameController.text,
+                          email: _emailController.text,
+                          biography: "",
+                          facebook: _facebookController.text,
+                          twitter: _twitterController.text,
+                          linkedin: _linkedinController.text);
+                      _updateUserDetailsResponse =
+                          await MainRepository().updateUserDetails(token, user);
+
+                      if (_userDetails.id != null &&
+                          _userDetails.status == "success") {
+                        setState(() {
+                          _loading = false;
+                        });
+                        userDetailBloc.dispose();
+                      } else {
+                        setState(() {
+                          _loading = false;
+                        });
+                      }
+
+                      userDetailBloc.getUserDetails(token);
+                    })
+                : RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    color: Theme.of(context).primaryColor,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 12),
+                        child: SizedBox(
+                          height: 25.0,
+                          width: 25.0,
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                new AlwaysStoppedAnimation<Color>(Colors.white),
+                            strokeWidth: 4.0,
+                          ),
+                        )),
+                    onPressed: () async {}),
           ),
         ],
       ),
     );
   }
 
-  Widget _textField(String hintText) {
+  Widget _textField(String hintText, TextEditingController _controller) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 8.0,
@@ -120,12 +270,20 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),
-        child: TextField(
+        child: TextFormField(
+          controller: _controller,
           autofocus: false,
           keyboardType: TextInputType.multiline,
           maxLength: null,
           maxLines: null,
           minLines: 1,
+          textInputAction: TextInputAction.next,
+          // onFieldSubmitted: ,
+          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+          style: TextStyle(
+              color: Color(0xFF000000),
+              fontFamily: "SF Pro Display Regular",
+              fontSize: 14),
           decoration: new InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -135,6 +293,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
               contentPadding:
                   EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
               hintText: hintText,
+              labelText: hintText,
               hintStyle: TextStyle(
                   color: Color(0xFF999999),
                   fontFamily: "SF Pro Display Regular",
