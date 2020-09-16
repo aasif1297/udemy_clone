@@ -97,7 +97,9 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => CourseOverviewScreen(),
+                                builder: (context) => CourseOverviewScreen(
+                                  course: results[index],
+                                ),
                               ),
                             );
                           },

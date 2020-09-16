@@ -41,8 +41,6 @@ class MainRepository {
       'linkedin_link': userDetails.linkedin
     };
     try {
-      // _dio.options.headers['content-Type'] =
-      //     'application/x-www-form-urlencoded';
       _dio.options.headers = {
         "content-type": 'application/x-www-form-urlencoded'
       };

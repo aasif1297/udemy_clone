@@ -104,7 +104,9 @@ class _MyCompletedCoursesWidgetState extends State<MyCompletedCoursesWidget> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            CourseOverviewScreen(),
+                                            CourseOverviewScreen(
+                                          course: results[index],
+                                        ),
                                       ),
                                     );
                                   },

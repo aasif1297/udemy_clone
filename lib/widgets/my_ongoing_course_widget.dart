@@ -98,10 +98,13 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                   onTap: () {
+                                    // print("Course Purchased -> ${result[index].}");
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            CourseOverviewScreen(),
+                                            CourseOverviewScreen(
+                                          course: result[index],
+                                        ),
                                       ),
                                     );
                                   },

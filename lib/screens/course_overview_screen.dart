@@ -9,7 +9,7 @@ import 'package:udemy_clone/screens/course_screen.dart';
 import 'package:udemy_clone/screens/instructor_profile_screen.dart';
 
 class CourseOverviewScreen extends StatefulWidget {
-  final CoursesResponse course;
+  final course;
 
   const CourseOverviewScreen({Key key, this.course}) : super(key: key);
   //const CoursesByIdScreen({Key key, this.id, this.category, this.no_of_courses})
@@ -789,6 +789,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
                       flex: 2,
                       child: InkWell(
                         onTap: () {
+                          print("Course Purchased ${results[0].isPurchased}");
                           if (!results[0].isPurchased) {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
