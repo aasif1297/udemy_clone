@@ -83,7 +83,7 @@ class _CourseOverviewScreenState extends State<CourseOverviewScreen>
     _scrollController.dispose();
 
     super.dispose();
-    courseDetailByIdBloc..dainStream();
+    courseDetailByIdBloc.dispose();
   }
 
   @override

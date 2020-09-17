@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udemy_clone/bloc/get_my_courses_bloc.dart';
 import 'package:udemy_clone/model/my_courses_response.dart';
 import 'package:udemy_clone/screens/course_overview_screen.dart';
+import 'package:udemy_clone/screens/course_screen.dart';
 
 class MyOnGoingCourseWidget extends StatefulWidget {
   @override
@@ -98,12 +99,10 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                   onTap: () {
-                                    // print("Course Purchased -> ${result[index].}");
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            CourseOverviewScreen(
-                                          course: result[index],
+                                        builder: (context) => CourseScreen(
+                                          courseDetailResponse: result[index],
                                         ),
                                       ),
                                     );

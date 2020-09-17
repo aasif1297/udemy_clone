@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:udemy_clone/model/course_detail_response.dart';
+import 'package:udemy_clone/model/my_courses_response.dart';
 import 'package:udemy_clone/screens/review_screen.dart';
 import 'package:udemy_clone/widgets/my_ongoing_course_widget.dart';
 
 class CourseScreen extends StatefulWidget {
-  final CourseDetailResponse courseDetailResponse;
+  final MyCoursesResponse courseDetailResponse;
 
   const CourseScreen({Key key, this.courseDetailResponse}) : super(key: key);
   @override
@@ -45,7 +46,6 @@ class _CourseScreenState extends State<CourseScreen>
   @override
   void initState() {
     _scrollController = ScrollController();
-    // _scrollController.addListener(_scrollListener);
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_smoothScrollToTop);
 
@@ -170,7 +170,7 @@ class _CourseScreenState extends State<CourseScreen>
 
   _buildTabContext() => Container(
       child: ListView.builder(
-          itemCount: widget.courseDetailResponse.sections.length,
+          itemCount: 10,
           itemBuilder: (ctx, index) {
             var sectionIndex = index;
             return Card(
@@ -185,7 +185,7 @@ class _CourseScreenState extends State<CourseScreen>
                             children: [
                               Expanded(
                                 child: Text(
-                                  "${widget.courseDetailResponse.sections[sectionIndex].title}",
+                                  "{widget.courseDetailResponse.sections[sectionIndex].title}",
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontFamily: "Google Sans Medium",
@@ -203,8 +203,7 @@ class _CourseScreenState extends State<CourseScreen>
                           ),
                           ListView.builder(
                               shrinkWrap: true,
-                              itemCount: widget.courseDetailResponse
-                                  .sections[index].lessons.length,
+                              itemCount: 10,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (ctx, index) {
                                 return Row(
@@ -212,7 +211,7 @@ class _CourseScreenState extends State<CourseScreen>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "${index + 1}.",
+                                      "{index + 1}.",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontFamily: "Google Sans Medium",
@@ -227,7 +226,7 @@ class _CourseScreenState extends State<CourseScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "${widget.courseDetailResponse.sections[sectionIndex].lessons[index].title}",
+                                            "{widget.courseDetailResponse.sections[sectionIndex].lessons[index].title}",
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontFamily:
@@ -238,7 +237,7 @@ class _CourseScreenState extends State<CourseScreen>
                                             height: 10,
                                           ),
                                           Text(
-                                            "${widget.courseDetailResponse.sections[sectionIndex].lessons[index].duration}",
+                                            "{widget.courseDetailResponse.sections[sectionIndex].lessons[index].duration}",
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily:
@@ -607,7 +606,8 @@ class _CourseScreenState extends State<CourseScreen>
                 controller: _tabController,
                 children: [
                   _buildTabContext(),
-                  MyOnGoingCourseWidget(),
+                  _buildTabContext2(),
+                  // MyOnGoingCourseWidget(),
                   _buildTabContext3()
                 ],
               ),
