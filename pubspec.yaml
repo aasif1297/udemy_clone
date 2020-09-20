@@ -40,6 +40,8 @@ dependencies:
   rxdart: ^0.24.1
   shared_preferences: any
   webview_flutter: ^0.3.22+1
+  video_player: ^0.10.12+3
+  chewie: ^0.9.10
 
 dev_dependencies:
   flutter_test:

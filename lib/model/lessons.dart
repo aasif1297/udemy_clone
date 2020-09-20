@@ -13,7 +13,7 @@ class Lessons {
   String attachmentUrl;
   String attachmentType;
   String summary;
-  int isCompleted;
+  String isCompleted;
   bool userValidity;
 
   Lessons(
@@ -49,7 +49,7 @@ class Lessons {
     attachmentUrl = json['attachment_url'];
     attachmentType = json['attachment_type'];
     summary = json['summary'];
-    isCompleted = json['is_completed'];
+    isCompleted = json['is_completed'].toString();
     userValidity = json['user_validity'];
   }
 

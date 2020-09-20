@@ -11,6 +11,7 @@ class Sections {
   int lessonCounterEnds;
   int completedLessonNumber;
   bool userValidity;
+  String error;
 
   Sections(
       {this.id,

@@ -6,6 +6,7 @@ import 'package:udemy_clone/model/course_detail_response.dart';
 import 'package:udemy_clone/model/courses_response.dart';
 import 'package:udemy_clone/model/login_response.dart';
 import 'package:udemy_clone/model/my_courses_response.dart';
+import 'package:udemy_clone/model/sections.dart';
 import 'package:udemy_clone/model/update_user_detail_repsponse.dart';
 import 'package:udemy_clone/model/user_detail.dart';
 
@@ -27,6 +28,21 @@ class MainRepository {
   var fav_courses_url = "$mainUrl/my_wishlist";
   var user_details_url = "$mainUrl/userdata";
   var update_user_details_url = "$mainUrl/update_userdata";
+  var sections_url = "$mainUrl/sections";
+  //https://demo.academy-lms.com/default/index.php/api/sections?
+
+  Future<List<Sections>> getAllSections(String token, String courseID) async {
+    var params = {'auth_token': token, 'course_id': courseID};
+    try {
+      Response<String> response =
+          await _dio.get(sections_url, queryParameters: params);
+      List responseJson = json.decode(response.data);
+      return responseJson.map((e) => Sections.fromJson(e)).toList();
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
 
   Future<UpdateUserDetailsResponse> updateUserDetails(
       String token, UserDetails userDetails) async {
