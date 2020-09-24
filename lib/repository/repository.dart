@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:udemy_clone/model/categories_response.dart';
 import 'package:udemy_clone/model/course_detail_response.dart';
 import 'package:udemy_clone/model/courses_response.dart';
 import 'package:udemy_clone/model/login_response.dart';
 import 'package:udemy_clone/model/my_courses_response.dart';
+import 'package:udemy_clone/model/save_course_response.dart';
 import 'package:udemy_clone/model/sections.dart';
 import 'package:udemy_clone/model/update_user_detail_repsponse.dart';
 import 'package:udemy_clone/model/user_detail.dart';
@@ -14,7 +16,7 @@ import '../model/courses_response.dart';
 
 class MainRepository {
   static String mainUrl = "https://demo.academy-lms.com/default/index.php/api";
-
+  // static String mainUrl = "http://doshopping.pk/academy/api";
   final Dio _dio = Dio();
   var categories_url = '$mainUrl/categories';
   var login_url = '$mainUrl/login';
@@ -29,7 +31,25 @@ class MainRepository {
   var user_details_url = "$mainUrl/userdata";
   var update_user_details_url = "$mainUrl/update_userdata";
   var sections_url = "$mainUrl/sections";
+  var save_course_progress_url = "$mainUrl/save_course_progress";
+
   //https://demo.academy-lms.com/default/index.php/api/sections?
+
+  Future<SaveCourseProgressResponse> saveCourseProgress(
+      String token, String lessonId, String progress) async {
+    var params = {
+      'auth_token': token,
+      'lesson_id': lessonId,
+      'progress': progress
+    };
+    try {
+      Response response =
+          await _dio.get(save_course_progress_url, queryParameters: params);
+      return SaveCourseProgressResponse.fromJson(response.data);
+    } catch (error, stacktrace) {
+      return SaveCourseProgressResponse.withError("$error");
+    }
+  }
 
   Future<List<Sections>> getAllSections(String token, String courseID) async {
     var params = {'auth_token': token, 'course_id': courseID};

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:udemy_clone/screens/course_overview_screen.dart';
 import 'package:udemy_clone/screens/course_screen.dart';
 
@@ -63,11 +64,18 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen>
               itemBuilder: (context, index) {
                 return InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CourseOverviewScreen(),
-                        ),
+                      pushNewScreen(
+                        context,
+                        screen: CourseOverviewScreen(),
+                        withNavBar: false, // OPTIONAL VALUE. True by default.
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
                       );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => CourseOverviewScreen(),
+                      //   ),
+                      // );
                     },
                     child: _itemWidget());
               })));

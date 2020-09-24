@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udemy_clone/bloc/get_all_sections_bloc.dart';
 import 'package:udemy_clone/model/my_courses_response.dart';
+import 'package:udemy_clone/model/save_course_response.dart';
 import 'package:udemy_clone/model/sections.dart';
+import 'package:udemy_clone/repository/repository.dart';
 
 class LecturesWidget extends StatefulWidget {
   final MyCoursesResponse courseDetailResponse;
@@ -14,7 +16,7 @@ class LecturesWidget extends StatefulWidget {
 
 class _LecturesWidgetState extends State<LecturesWidget> {
   SharedPreferences sharedPreferences;
-
+  bool _loading = false;
   @override
   void initState() {
     super.initState();
@@ -35,6 +37,22 @@ class _LecturesWidgetState extends State<LecturesWidget> {
     // TODO: implement dispose
     super.dispose();
     allSectionsBloc.dainStream();
+  }
+
+  Future<SaveCourseProgressResponse> _saveCourseProgressResponse(
+      String token, String id, String progress) async {
+    setState(() {
+      _loading = true;
+    });
+    var error = await MainRepository().saveCourseProgress(token, id, progress);
+
+    if (error != null) {
+      setState(() {
+        _loading = false;
+      });
+
+      return error;
+    }
   }
 
   @override
@@ -177,12 +195,28 @@ class _LecturesWidgetState extends State<LecturesWidget> {
                                                     .lessons[index]
                                                     .isCompleted = "1";
                                               });
+
+                                              _saveCourseProgressResponse(
+                                                  sharedPreferences
+                                                      .getString("token"),
+                                                  results[sectionIndex]
+                                                      .lessons[index]
+                                                      .id,
+                                                  "1");
                                             } else {
                                               setState(() {
                                                 results[sectionIndex]
                                                     .lessons[index]
                                                     .isCompleted = "0";
                                               });
+
+                                              _saveCourseProgressResponse(
+                                                  sharedPreferences
+                                                      .getString("token"),
+                                                  results[sectionIndex]
+                                                      .lessons[index]
+                                                      .id,
+                                                  "0");
                                             }
                                           })
                                     ],

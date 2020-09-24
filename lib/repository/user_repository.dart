@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:udemy_clone/model/login_response.dart';
+import 'package:udemy_clone/model/register_response.dart';
 
 class UserRepository {
-  static String mainUrl = "https://demo.academy-lms.com/default/index.php/api/";
+  static String mainUrl = "http://doshopping.pk/academy/api";
 
   final Dio _dio = Dio();
   var login_url = '$mainUrl/login';
+  var register_url = '$mainUrl/register';
 
   Future<LoginResponse> login(
       {@required String email, @required String password}) async {
@@ -16,6 +18,27 @@ class UserRepository {
       return LoginResponse.fromJson(response.data);
     } catch (error, stacktrace) {
       LoginResponse.withError("$error");
+    }
+  }
+
+  Future<RegisterResponse> register(String first_name, String last_name,
+      String email, String password) async {
+    var params = {
+      'first_name': first_name,
+      'last_name': last_name,
+      'email': email,
+      'password': password
+    };
+    try {
+      _dio.options.headers = {
+        "content-type": 'application/x-www-form-urlencoded'
+      };
+
+      Response response = await _dio.post(register_url, data: params);
+      // Response response = await _dio.get(register_url, queryParameters: params);
+      return RegisterResponse.fromJson(response.data);
+    } catch (error, stacktrace) {
+      RegisterResponse.withError("$error");
     }
   }
 

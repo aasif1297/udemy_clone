@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udemy_clone/bloc/get_fav_courses_bloc.dart';
 import 'package:udemy_clone/bloc/get_my_courses_bloc.dart';
@@ -95,13 +96,23 @@ class _FavouriteCoursesWidgetState extends State<FavouriteCoursesWidget> {
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => CourseOverviewScreen(
-                                  course: results[index],
-                                ),
+                            pushNewScreen(
+                              context,
+                              screen: CourseOverviewScreen(
+                                course: results[index],
                               ),
+                              withNavBar:
+                                  false, // OPTIONAL VALUE. True by default.
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
                             );
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => CourseOverviewScreen(
+                            //       course: results[index],
+                            //     ),
+                            //   ),
+                            // );
                           },
                           child: _itemWidget2(results, index));
                     }))

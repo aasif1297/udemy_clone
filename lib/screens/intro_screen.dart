@@ -18,7 +18,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   Widget _buildImage(String assetName) {
     return Container(
-      color: Colors.amber,
       width: MediaQuery.of(context).size.width,
       child: Image.asset(
         'assets/images/$assetName.png',

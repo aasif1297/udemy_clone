@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:udemy_clone/bloc/get_courses_bloc.dart';
 import 'package:udemy_clone/model/courses_response.dart';
+import 'package:udemy_clone/screens/course_overview_screen.dart';
 import 'package:udemy_clone/screens/notifications_screen.dart';
 import 'package:udemy_clone/screens/search_screen.dart';
 
@@ -154,7 +156,20 @@ class _CoursesByIdScreenState extends State<CoursesByIdScreen>
                             shrinkWrap: true,
                             itemCount: results.length,
                             itemBuilder: (context, index) {
-                              return _itemWidget(results, index);
+                              return InkWell(
+                                  onTap: () {
+                                    pushNewScreen(
+                                      context,
+                                      screen: CourseOverviewScreen(
+                                        course: results[index],
+                                      ),
+                                      withNavBar:
+                                          false, // OPTIONAL VALUE. True by default.
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino,
+                                    );
+                                  },
+                                  child: _itemWidget(results, index));
                             }))
                   ],
                 ),

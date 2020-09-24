@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(() {
                               _loading = false;
                             });
-                            showInSnackBar(_loginResponse.error);
+                            showInSnackBar("Wrong Login Credentials");
                           }
 
                           // Navigator.of(context).pushAndRemoveUntil(
@@ -337,8 +337,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _textField1(BuildContext context, String text,
-      TextEditingController controller, TextInputType type, bool obscure, TextEditingController _controller) {
+  Widget _textField1(
+      BuildContext context,
+      String text,
+      TextEditingController controller,
+      TextInputType type,
+      bool obscure,
+      TextEditingController _controller) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xFFF3F5F5),

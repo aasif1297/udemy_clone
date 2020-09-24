@@ -1,16 +1,25 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udemy_clone/bloc/get_all_sections_bloc.dart';
 import 'package:udemy_clone/model/course_detail_response.dart';
 import 'package:udemy_clone/model/my_courses_response.dart';
+import 'package:udemy_clone/model/save_course_response.dart';
 import 'package:udemy_clone/model/sections.dart';
+import 'package:udemy_clone/repository/repository.dart';
 import 'package:udemy_clone/screens/review_screen.dart';
 import 'package:udemy_clone/widgets/lectures_widget.dart';
 import 'package:udemy_clone/widgets/my_ongoing_course_widget.dart';
 import 'package:udemy_clone/widgets/videoplayer_widget.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:async';
+
+import 'package:webview_flutter/webview_flutter.dart';
+
+const html = '''
+https://player.vdocipher.com/playerAssets/1.x/vdo/embed/index.html#otp=20160313versASE323ByAB2I4WeqfttRpV7fkDgjfDTju6rt7Z61QCAI0MCI1OlH&playbackInfo=eyJ2aWRlb0lkIjoiZGVjNzQ4OTY0NTU3OWE2ZDQ0NGMxZDQ4OTRlNDg5YWYifQ=="''';
 
 class CourseScreen extends StatefulWidget {
   final MyCoursesResponse courseDetailResponse;
@@ -22,6 +31,8 @@ class CourseScreen extends StatefulWidget {
 
 class _CourseScreenState extends State<CourseScreen>
     with SingleTickerProviderStateMixin {
+  bool webView = true;
+  bool webViewJs = true;
   SharedPreferences sharedPreferences;
   final bodyGlobalKey = GlobalKey();
   String dropdownValue = 'All Lectures';
@@ -30,7 +41,7 @@ class _CourseScreenState extends State<CourseScreen>
   bool fixedScroll;
   String videoUrl;
   VideoPlayerController _videoPlayerController;
-
+  bool _loading = false;
   final List<Widget> myTabs = [
     Tab(
       child: Container(
@@ -75,6 +86,22 @@ class _CourseScreenState extends State<CourseScreen>
     await _videoPlayerController.initialize();
     _videoPlayerController.setLooping(false);
     _videoPlayerController.play();
+  }
+
+  Future<SaveCourseProgressResponse> _saveCourseProgressResponse(
+      String token, String id, String progress) async {
+    setState(() {
+      _loading = true;
+    });
+    var error = await MainRepository().saveCourseProgress(token, id, progress);
+
+    if (error != null) {
+      setState(() {
+        _loading = false;
+      });
+
+      return error;
+    }
   }
 
   @override
@@ -357,11 +384,18 @@ class _CourseScreenState extends State<CourseScreen>
                       color: Colors.white,
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => CourseScreen(),
-                            ),
+                          pushNewScreen(
+                            context,
+                            screen: CourseScreen(),
+                            withNavBar: false,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
                           );
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => CourseScreen(),
+                          //   ),
+                          // );
                         },
                         child: Container(
                           padding: const EdgeInsets.only(top: 0),
@@ -437,13 +471,26 @@ class _CourseScreenState extends State<CourseScreen>
         SizedBox(
           height: 10,
         ),
+        // SizedBox(
+        //     height: 250,
+        //     width: double.infinity,
+        //     child: VideoPlayerWidget(
+        //       videoPlayerController: _videoPlayerController,
+        //       newKey: UniqueKey(),
+        //     )),
         SizedBox(
-            height: 250,
-            width: double.infinity,
-            child: VideoPlayerWidget(
-              videoPlayerController: _videoPlayerController,
-              newKey: UniqueKey(),
-            )),
+          height: 250,
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: HtmlWidget(
+              html,
+              unsupportedWebViewWorkaroundForIssue37: true,
+              webView: true,
+              webViewJs: true,
+            ),
+          ),
+        ),
         Container(
             width: double.infinity,
             padding: EdgeInsets.only(top: 50),
@@ -625,9 +672,9 @@ class _CourseScreenState extends State<CourseScreen>
                                             .videoUrl;
                                       });
 
-                                      initPlayer(videoUrl);
+                                      // initPlayer(videoUrl);
 
-                                      debugPrint(videoUrl);
+                                      // debugPrint(videoUrl);
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -689,19 +736,53 @@ class _CourseScreenState extends State<CourseScreen>
                                                       .lessons[index]
                                                       .isCompleted = "1";
                                                 });
+
+                                                _saveCourseProgressResponse(
+                                                    sharedPreferences
+                                                        .getString("token"),
+                                                    results[sectionIndex]
+                                                        .lessons[index]
+                                                        .id,
+                                                    "1");
                                               } else {
                                                 setState(() {
                                                   results[sectionIndex]
                                                       .lessons[index]
                                                       .isCompleted = "0";
                                                 });
+
+                                                _saveCourseProgressResponse(
+                                                    sharedPreferences
+                                                        .getString("token"),
+                                                    results[sectionIndex]
+                                                        .lessons[index]
+                                                        .id,
+                                                    "0");
                                               }
                                             })
+                                        // : _buildLoadingWidget1()
                                       ],
                                     ),
                                   );
                                 }),
                           ])));
             }));
+  }
+
+  Widget _buildLoadingWidget1() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFFF3939)),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
   }
 }

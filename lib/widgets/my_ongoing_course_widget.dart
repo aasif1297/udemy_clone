@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udemy_clone/bloc/get_my_courses_bloc.dart';
 import 'package:udemy_clone/model/my_courses_response.dart';
@@ -99,12 +100,23 @@ class _MyOnGoingCourseWidgetState extends State<MyOnGoingCourseWidget> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => CourseScreen(
-                                          courseDetailResponse: result[index],
-                                        ),
+                                    // Navigator.of(context).push(
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => CourseScreen(
+                                    //       courseDetailResponse: result[index],
+                                    //     ),
+                                    //   ),
+                                    // );
+
+                                    pushNewScreen(
+                                      context,
+                                      screen: CourseScreen(
+                                        courseDetailResponse: result[index],
                                       ),
+                                      withNavBar:
+                                          false, // OPTIONAL VALUE. True by default.
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino,
                                     );
                                   },
                                   child: _itemWidget(result, index));

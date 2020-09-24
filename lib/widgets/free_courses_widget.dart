@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:udemy_clone/bloc/get_all_courses_bloc.dart';
 import '../model/courses_response.dart';
 import '../screens/course_overview_screen.dart';
@@ -73,13 +74,22 @@ class _FreeCoursesWidgetState extends State<FreeCoursesWidget> {
         itemBuilder: (ctx, index) {
           return InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CourseOverviewScreen(
-                    course: results[index],
-                  ),
+              pushNewScreen(
+                context,
+                screen: CourseOverviewScreen(
+                  course: results[index],
                 ),
+                withNavBar: false, // OPTIONAL VALUE. True by default.
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
               );
+
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => CourseOverviewScreen(
+              //       course: results[index],
+              //     ),
+              //   ),
+              // );
             },
             child: Container(
                 margin: EdgeInsets.only(right: 20),
